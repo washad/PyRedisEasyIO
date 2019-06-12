@@ -5,8 +5,9 @@ import json
 
 class IOGroup(ReaderWriter):
 
-    def __init__(self, host='localhost', port=6379, db=0, flush_db: bool = True):
+    def __init__(self, host='localhost', port=6379, db=0, flush: bool = False):
         super().__init__(host=host, port=port, db=db)
+        self.flush_keys()
         member_names = [d for d in dir(self) if not d.startswith('__')]
         self.members = []
         for name in member_names:
@@ -18,7 +19,7 @@ class IOGroup(ReaderWriter):
                 self.members.append(name)
             except AttributeError:
                 pass
-        if flush_db:
+        if flush:
             self.flush_keys()
 
     def dump(self, key: str) -> str:
