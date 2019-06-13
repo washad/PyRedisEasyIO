@@ -1,13 +1,12 @@
-from reader_writer import ReaderWriter
-from single_io import SingleIO
+from pyrediseasyio.reader_writer import ReaderWriter
+from pyrediseasyio.single_io import SingleIO
 import json
 
 
 class IOGroup(ReaderWriter):
 
-    def __init__(self, host='localhost', port=6379, db=0, flush: bool = False):
+    def __init__(self, host='localhost', port=6379, db=0, flush_db: bool = True):
         super().__init__(host=host, port=port, db=db)
-        self.flush_keys()
         member_names = [d for d in dir(self) if not d.startswith('__')]
         self.members = []
         for name in member_names:
@@ -19,7 +18,7 @@ class IOGroup(ReaderWriter):
                 self.members.append(name)
             except AttributeError:
                 pass
-        if flush:
+        if flush_db:
             self.flush_keys()
 
     def dump(self, key: str) -> str:

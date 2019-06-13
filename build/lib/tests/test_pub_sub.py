@@ -2,14 +2,15 @@ import unittest
 import time
 import threading
 
-from reader_writer import ReaderWriter
+from pyrediseasyio.reader_writer import ReaderWriter
 from assertpy import assert_that
 
 
 class PubSubTests(unittest.TestCase):
 
     def _publish_many(self, count: int, wait: float = 0):
-        time.sleep(wait)
+        if wait > 0:
+            time.sleep(wait)
         for i in range(0, count):
             self.pubsub1.publish(f"Message {i}")
 
@@ -30,11 +31,12 @@ class PubSubTests(unittest.TestCase):
         assert_that(d).is_equal_to(data)
 
     def test_get_many_messages(self):
+        count = 2
         pubsub1, pubsub2 = self.pubsub1, self.pubsub2
-        self._publish_many(20)
-        time.sleep(0.1)
+        self._publish_many(count)
+        time.sleep(0.2)
         messages = pubsub2.get_messages()
-        assert_that(len(messages)).is_equal_to(20)
+        assert_that(len(messages)).is_equal_to(count)
         messages = pubsub2.get_messages()
         assert_that(messages).is_empty()
 
