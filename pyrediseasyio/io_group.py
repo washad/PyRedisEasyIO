@@ -7,6 +7,8 @@ class IOGroup(ReaderWriter):
 
     def __init__(self, host='localhost', port=6379, db=0, flush_db: bool = True):
         super().__init__(host=host, port=port, db=db)
+        if flush_db:
+            self.flush_keys()
         member_names = [d for d in dir(self) if not d.startswith('__')]
         self.members = []
         for name in member_names:
@@ -16,10 +18,9 @@ class IOGroup(ReaderWriter):
                     continue
                 attr._reader_writer = self
                 self.members.append(name)
+                attr.write(attr.default)
             except AttributeError:
                 pass
-        if flush_db:
-            self.flush_keys()
 
     def dump(self, key: str) -> str:
         """

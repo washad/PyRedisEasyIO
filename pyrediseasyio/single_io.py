@@ -10,7 +10,7 @@ class SingleIO:
         self.name = name
         self.addr = addr
         self._reader_writer = reader
-        self._default = default
+        self.default = default
 
     def __eq__(self, other):
         if isinstance(other, SingleIO):
@@ -46,7 +46,7 @@ class SingleIO:
         with lock:
             val = self._reader_writer.read(self.addr)
             if val is None:
-                val = self._default
+                val = self.default
             val = self._convert_type(val)
             return val
 
@@ -55,7 +55,7 @@ class SingleIO:
             return
         with lock:
             value = self._convert_type(value)
-            self._reader_writer.write(self.addr, self._convert_type(value))
+            self._reader_writer.write(self.addr, value)
 
 
 class BooleanIO(SingleIO):
