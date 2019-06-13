@@ -1,4 +1,4 @@
-from abstract_reader_writer import AbstractReaderWriter
+from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
 import threading
 from str2bool import str2bool
 
@@ -11,7 +11,6 @@ class SingleIO:
         self.addr = addr
         self._reader_writer = reader
         self._default = default
-        self._value = default
 
     def __eq__(self, other):
         if isinstance(other, SingleIO):
@@ -35,7 +34,7 @@ class SingleIO:
 
     @property
     def value(self):
-        return self._convert_type(self._value)
+        return self.read()
 
     @staticmethod
     def _convert_type(value):
@@ -49,7 +48,6 @@ class SingleIO:
             if val is None:
                 val = self._default
             val = self._convert_type(val)
-            self._value = val
             return val
 
     def write(self, value):
@@ -58,7 +56,6 @@ class SingleIO:
         with lock:
             value = self._convert_type(value)
             self._reader_writer.write(self.addr, self._convert_type(value))
-            self._value = value
 
 
 class BooleanIO(SingleIO):

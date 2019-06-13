@@ -1,6 +1,6 @@
 
 import redis
-from abstract_reader_writer import AbstractReaderWriter
+from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
 from typing import List
 
 
