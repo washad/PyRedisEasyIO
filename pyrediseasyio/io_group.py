@@ -22,6 +22,13 @@ class IOGroup(ReaderWriter):
             except AttributeError:
                 pass
 
+    def __setattr__(self, key, value):
+        if hasattr(self, 'members') and key in self.members:
+            attr = getattr(self, key)
+            attr.write(value)
+            return
+        return super().__setattr__(key, value)
+
     def dump(self, key: str) -> str:
         """
         Creates a json string containing a list of dict(name/addr/value) of all members and stores it in-memory
