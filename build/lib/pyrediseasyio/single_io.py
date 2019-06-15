@@ -12,6 +12,11 @@ class SingleIO:
         self._reader_writer = reader
         self.default = default
 
+    def __and__(self, other):
+        if hasattr(other, 'value'):
+            return self.value and other.value
+        return self.value and other
+
     def __add__(self, other):
         if hasattr(other, 'value'):
             other = other.value

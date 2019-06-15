@@ -5,10 +5,8 @@ import json
 
 class IOGroup(ReaderWriter):
 
-    def __init__(self, host='localhost', port=6379, db=0, flush_db: bool = True):
+    def __init__(self, host='localhost', port=6379, db=0):
         super().__init__(host=host, port=port, db=db)
-        if flush_db:
-            self.flush_keys()
         member_names = [d for d in dir(self) if not d.startswith('__')]
         self.members = []
         for name in member_names:
