@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyrediseasyio
-Version: 0.0.4
+Version: 0.0.5
 Summary: A set of tools for simplifying reading and writing of single values to/from Redis.
 Home-page: https://github.com/washad/PyRedisEasyIO
 Author: Steve Jackson

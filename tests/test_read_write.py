@@ -31,9 +31,6 @@ class TestGroup3(IOGroup):
         super().__init__(db=db)
 
 
-
-
-
 class TestReadWrite(unittest.TestCase):
 
     def setUp(self):
@@ -113,5 +110,17 @@ class TestReadWrite(unittest.TestCase):
 
         r = group2.read("SomeKey")
         assert_that(r).is_equal_to(j)
+
+    def test_arithmatic_operations(self):
+        group1 = self.group
+        group3 = self.group3
+
+        group1.Float1 = 10.0
+        group3.Float1 = 20.0
+
+        assert_that(group1.Float1 + group3.Float1).is_equal_to(30)
+        assert_that(group1.Float1 * group3.Float1).is_equal_to(200)
+        assert_that(group3.Float1 / group1.Float1).is_equal_to(2)
+        assert_that(group3.Float1 - group1.Float1).is_equal_to(10)
 
 

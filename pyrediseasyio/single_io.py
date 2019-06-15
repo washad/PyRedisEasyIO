@@ -12,13 +12,38 @@ class SingleIO:
         self._reader_writer = reader
         self.default = default
 
+    def __add__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        return self.value + other
+
+    def __sub__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        return self.value - other
+
+    def __mul__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        return self.value * other
+
+    def __truediv__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        return self.value / other
+
+    def __floordiv__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        return self.value // other
+
     def __eq__(self, other):
-        if isinstance(other, SingleIO):
+        if hasattr(other, 'value'):
             other = other.value
         return self.value == other
 
     def __ne__(self, other):
-        if isinstance(other, SingleIO):
+        if hasattr(other, 'value'):
             other = other.value
         return self.value != other
 
