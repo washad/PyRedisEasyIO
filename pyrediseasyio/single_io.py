@@ -6,11 +6,12 @@ lock = threading.Lock()
 
 
 class SingleIO:
-    def __init__(self, name: str, addr: str, default: object, reader: AbstractReaderWriter = None):
+    def __init__(self, name: str, addr: str, default: object, units: str = None, reader: AbstractReaderWriter = None):
         self.name = name
         self.addr = addr
         self._reader_writer = reader
         self.default = default
+        self.units = units
 
     def __and__(self, other):
         if hasattr(other, 'value'):
@@ -60,7 +61,7 @@ class SingleIO:
         self.write(value)
 
     def __str__(self):
-        return f'[{type(self).__name__}] {self.name} = {self.value}'
+        return f'[{type(self).__name__}] {self.name} = {self.value} {self.units}'
 
     @property
     def value(self):
@@ -89,8 +90,8 @@ class SingleIO:
 
 
 class BooleanIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: bool = False, reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, reader)
+    def __init__(self, name: str, addr: str, default: bool = False, units: str = None, reader: AbstractReaderWriter = None):
+        super().__init__(name, addr, default, units, reader)
 
     @staticmethod
     def _convert_type(value):
@@ -107,8 +108,8 @@ class BooleanIO(SingleIO):
 
 
 class IntIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: int = 0, reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, reader)
+    def __init__(self, name: str, addr: str, default: int = 0, units: str = None, reader: AbstractReaderWriter = None):
+        super().__init__(name, addr, default, units, reader)
 
     @staticmethod
     def _convert_type(value):
@@ -116,8 +117,8 @@ class IntIO(SingleIO):
 
 
 class FloatIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: float = 0, reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, reader)
+    def __init__(self, name: str, addr: str, default: float = 0, units: str = None, reader: AbstractReaderWriter = None):
+        super().__init__(name, addr, default, units, reader)
 
     @staticmethod
     def _convert_type(value):
@@ -125,8 +126,8 @@ class FloatIO(SingleIO):
 
 
 class StringIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: str = '', reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, reader)
+    def __init__(self, name: str, addr: str, default: str = '', units: str = None, reader: AbstractReaderWriter = None):
+        super().__init__(name, addr, default, units, reader)
 
     @staticmethod
     def _convert_type(value):
