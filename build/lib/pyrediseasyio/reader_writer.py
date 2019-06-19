@@ -26,8 +26,14 @@ class ReaderWriter(AbstractReaderWriter):
         self._pubsub.subscribe(self._channels)
         self.get_messages()
 
-    def flush_keys(self):
+    def flush_db(self):
         self._server.flushdb()
+
+    def flush_all(self):
+        self._server.flushall()
+
+    def delete_key(self, key: str):
+        self._server.delete(key)
 
     @staticmethod
     def _get_channel_and_data_from_message(message: dict):
@@ -54,19 +60,19 @@ class ReaderWriter(AbstractReaderWriter):
             return None
         return self._get_channel_and_data_from_message(message)
 
-    def get_messages(self, get_subscription_messages=False, limit=100):
+    def get_messages(self, include_subscription_messages=False, limit=100):
         """
         Checks for waiting messages and returns all of them, an empty list if none are waiting.
-        :param get_subscription_messages: If this is true, messages will also include first-time subscription
+        :param include_subscription_messages: If this is true, messages will also include first-time subscription
         notifications. It is generally better to leave this False as the data response won't match expectations.
         :param limit: Applies a cap to the number of messages that will be returned.
         :return: Returns a list of tuples (channel, data) or an empty list if no messages are found.
         """
         messages = []
-        msg = self.get_next_message(get_subscription_messages)
+        msg = self.get_next_message(include_subscription_messages)
         while msg is not None:
             messages.append(msg)
-            msg = self.get_next_message(get_subscription_messages)
+            msg = self.get_next_message(include_subscription_messages)
             if len(messages) >= limit:
                 break
         return messages

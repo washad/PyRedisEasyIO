@@ -1,7 +1,6 @@
 import unittest
-
 from pyrediseasyio.io_group import IOGroup
-from pyrediseasyio.single_io import BooleanIO, IntIO, FloatIO
+from pyrediseasyio.single_io import BooleanIO, IntIO, FloatIO, StringIO
 from assertpy import assert_that
 
 
@@ -12,6 +11,9 @@ class TestGroup(IOGroup):
     Int2 = IntIO("Integer 2", "Int2", default=34)
     Float1 = FloatIO("Float 1", "Float1", default=1.2)
 
+    def __init__(self):
+        super().__init__(channel="TestChannel", delete_keys_on_startup = True)
+
 
 class TestGroup2(IOGroup):
     Bool1 = BooleanIO("Boolean 1", "Bool1", False)
@@ -19,6 +21,10 @@ class TestGroup2(IOGroup):
     Int1 = IntIO("Integer 1", "Int1")
     Int2 = IntIO("Integer 2", "Int2", default=34)
     Float1 = FloatIO("Float 1", "Float1", default=1.2)
+    Message1 = StringIO("String 1", "String1")
+
+    def __init__(self):
+        super().__init__(channel="TestChannel", delete_keys_on_startup=True)
 
 
 class TestGroup3(IOGroup):
@@ -28,7 +34,7 @@ class TestGroup3(IOGroup):
         self.Int1 = IntIO("Integer 1", "Int1")
         self.Int2 = IntIO("Integer 2", "Int2", default=34)
         self.Float1 = FloatIO("Float 1", "Float1", default=1.2)
-        super().__init__(db=db)
+        super().__init__(db=db, delete_keys_on_startup=True)
 
 
 class TestReadWrite(unittest.TestCase):
@@ -37,6 +43,9 @@ class TestReadWrite(unittest.TestCase):
         self.group = TestGroup()
         self.group2 = TestGroup2()
         self.group3 = TestGroup3()
+        self.group.flush_db()
+        self.group2.flush_db()
+        self.group3.flush_db()
 
     def test_that_defaults_are_applied(self):
         group = self.group
@@ -123,4 +132,16 @@ class TestReadWrite(unittest.TestCase):
         assert_that(group3.Float1 / group1.Float1).is_equal_to(2)
         assert_that(group3.Float1 - group1.Float1).is_equal_to(10)
 
+    def test_that_pubsub_possible_on_io_group(self):
+        group = self.group
+        group2 = self.group2
+
+        group2.Message1.publish("This is a test")
+
+        msg = None
+        for m in group.listen():
+            msg = m
+            break
+
+        assert_that("This is a test" in msg[1]).is_true()
 

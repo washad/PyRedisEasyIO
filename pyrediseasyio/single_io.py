@@ -1,6 +1,7 @@
 from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
 import threading
 from str2bool import str2bool
+import json
 
 lock = threading.Lock()
 
@@ -70,6 +71,11 @@ class SingleIO:
     @staticmethod
     def _convert_type(value):
         return value
+
+    def publish(self, value, channel: str = None):
+        value = self._convert_type(value)
+        data = json.dumps({self.addr: value})
+        self._reader_writer.publish(data, channel)
 
     def read(self):
         if self._reader_writer is None:

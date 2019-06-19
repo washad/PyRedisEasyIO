@@ -17,8 +17,8 @@ class PubSubTests(unittest.TestCase):
     def setUp(self):
         self.pubsub1 = ReaderWriter(channel="Channel1")
         self.pubsub2 = ReaderWriter(channel="Channel1")
-        self.pubsub1.flush_keys()
-        self.pubsub2.flush_keys()
+        self.pubsub1.flush_db()
+        self.pubsub2.flush_db()
 
     def test_get_single_message(self):
         pubsub1, pubsub2 = self.pubsub1, self.pubsub2

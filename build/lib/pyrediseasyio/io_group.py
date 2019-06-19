@@ -5,8 +5,11 @@ import json
 
 class IOGroup(ReaderWriter):
 
-    def __init__(self, host='localhost', port=6379, db=0):
-        super().__init__(host=host, port=port, db=db)
+    def __init__(self, host='localhost', port=6379, db=0,
+                 set_defaults_on_startup: bool = False,
+                 delete_keys_on_startup: bool = False, **kwargs):
+
+        super().__init__(host=host, port=port, db=db, **kwargs)
         member_names = [d for d in dir(self) if not d.startswith('__')]
         self.members = []
         for name in member_names:
@@ -16,7 +19,10 @@ class IOGroup(ReaderWriter):
                     continue
                 attr._reader_writer = self
                 self.members.append(name)
-                attr.write(attr.default)
+                if delete_keys_on_startup:
+                    self.delete_key(attr.addr)
+                if set_defaults_on_startup:
+                    attr.write(attr.default)
             except AttributeError:
                 pass
 
