@@ -34,35 +34,92 @@ class SingleIO:
             other = other.value
         return self.value * other
 
-    def __truediv__(self, other):
+    def __eq__(self, other):
         if hasattr(other, 'value'):
             other = other.value
-        return self.value / other
+        return self.value == other
 
     def __floordiv__(self, other):
         if hasattr(other, 'value'):
             other = other.value
         return self.value // other
 
-    def __eq__(self, other):
+    def __iadd__(self, other):
         if hasattr(other, 'value'):
             other = other.value
-        return self.value == other
+        val = self.value
+        val += other
+        self.write(val)
+
+    def __idiv__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        val = self.value
+        val /= other
+        self.write(val)
+
+    def __ifloordiv__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        val = self.value
+        val //= other
+        self.write(val)
+
+    def __imul__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        val = self.value
+        val *= other
+        self.write(val)
+
+    def __invert__(self):
+        return ~self.value
+
+    def __ipow__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        val = self.value
+        val **= other
+        self.write(val)
+
+    def __isub__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        val = self.value
+        val -= other
+        self.write(val)
 
     def __ne__(self, other):
         if hasattr(other, 'value'):
             other = other.value
         return self.value != other
 
-    def __get__(self, instance, owner):
-        self.read()
-        return self
+    def __or__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        return self.value or other
+
+    def __pos__(self):
+        return self.value
+
+    def __pow__(self, power, modulo=None):
+        if hasattr(power, 'value'):
+            power = power.value
+        return self.value ** power
+
+    def __neg__(self):
+        return -self.value
 
     def __set__(self, obj, value):
         self.write(value)
 
     def __str__(self):
         return f'[{type(self).__name__}] {self.name} = {self.value} {self.units}'
+
+    def __truediv__(self, other):
+        if hasattr(other, 'value'):
+            other = other.value
+        return self.value / other
 
     @property
     def value(self):
