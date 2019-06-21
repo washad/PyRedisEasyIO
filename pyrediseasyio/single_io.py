@@ -129,10 +129,12 @@ class SingleIO:
     def _convert_type(value):
         return value
 
-    def publish(self, value, channel: str = None):
+    def publish(self, value, channel: str = None, and_write: bool = False):
         value = self._convert_type(value)
         data = json.dumps({self.addr: value})
         self._reader_writer.publish(data, channel)
+        if and_write:
+            self.write(value)
 
     def read(self):
         if self._reader_writer is None:
