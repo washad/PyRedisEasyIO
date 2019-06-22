@@ -1,5 +1,7 @@
 from pyrediseasyio.reader_writer import ReaderWriter
-from pyrediseasyio.single_io import SingleIO
+from pyrediseasyio.io.base import SingleIO
+from dominate.tags import div, span, table, tr
+from typing import List, Callable
 import json
 
 
@@ -26,6 +28,9 @@ class IOGroup(ReaderWriter):
             except AttributeError:
                 pass
 
+    def __len__(self):
+        return len(self.members)
+
     def __setattr__(self, key, value):
         if hasattr(self, 'members') and key in self.members:
             attr = getattr(self, key)
@@ -44,15 +49,30 @@ class IOGroup(ReaderWriter):
         self.write(key, s)
         return s
 
-    def dumps(self) -> str:
+    def dumps(self, by_names: List = None, by_type: List = None, by_lambda: Callable = None) -> str:
         """
         Returns a json string containing a list of dict(name/addr/value) of all members.
         """
-        members = []
-        for m in self.members:
-            attr = getattr(self, m)
-            members.append(dict(name=attr.name, addr=attr.addr, value=attr.value))
+        attrs = self.get_attributes(by_names, by_type, by_lambda)
+        members = [dict(name=attr.name, addr=attr.addr, value=attr.value) for attr in attrs]
         return json.dumps(members)
+
+    def get_attributes(self, by_names: List = None, by_type: List = None,
+                       by_lambda_each: Callable = None, by_lambda_results: Callable = None):
+
+        names = self.members if by_names is None else by_names
+        attrs = [getattr(self, name) for name in names]
+        if by_type:
+            attrs = [a for a in attrs if type(a) in by_type]
+        if by_lambda_each:
+            attrs = [a for a in attrs if by_lambda_each(a)]
+        if by_lambda_results:
+            attrs = by_lambda_results(attrs)
+
+        return attrs
+
+
+
 
 
 

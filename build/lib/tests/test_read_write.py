@@ -1,6 +1,6 @@
 import unittest
-from pyrediseasyio.io_group import IOGroup
-from pyrediseasyio.single_io import BooleanIO, IntIO, FloatIO, StringIO
+from pyrediseasyio.io.io_group import IOGroup
+from pyrediseasyio.io.base import BooleanIO, IntIO, FloatIO, StringIO
 from assertpy import assert_that
 
 

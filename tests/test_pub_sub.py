@@ -2,11 +2,8 @@ import unittest
 import time
 import threading
 
-from pyrediseasyio.io_group import IOGroup
 from pyrediseasyio.reader_writer import ReaderWriter
 from assertpy import assert_that
-
-
 
 
 class PubSubTests(unittest.TestCase):

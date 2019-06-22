@@ -1,5 +1,5 @@
 from pyrediseasyio.reader_writer import ReaderWriter
-from pyrediseasyio.single_io import SingleIO
+from pyrediseasyio.io.base import SingleIO
 import json
 
 

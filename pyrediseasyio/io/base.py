@@ -1,6 +1,6 @@
 from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
+from dominate.tags import div, span, tr, td
 import threading
-from str2bool import str2bool
 import json
 
 lock = threading.Lock()
@@ -93,50 +93,4 @@ class SingleIO:
         with lock:
             value = self._convert_type(value)
             self._reader_writer.write(self.addr, value)
-
-
-class BooleanIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: bool = False, units: str = None, reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, units, reader)
-
-    @staticmethod
-    def _convert_type(value):
-        if isinstance(value, str):
-            return str2bool(value)
-        return bool(value)
-
-    def __bool__(self):
-        return self.value
-    
-    @property
-    def value(self) -> bool:
-        return super().value
-
-
-class IntIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: int = 0, units: str = None, reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, units, reader)
-
-    @staticmethod
-    def _convert_type(value):
-        return int(value)
-
-
-class FloatIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: float = 0, units: str = None, reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, units, reader)
-
-    @staticmethod
-    def _convert_type(value):
-        return float(value)
-
-
-class StringIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: str = '', units: str = None, reader: AbstractReaderWriter = None):
-        super().__init__(name, addr, default, units, reader)
-
-    @staticmethod
-    def _convert_type(value):
-        return str(value)
-
 
