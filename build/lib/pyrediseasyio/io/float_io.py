@@ -3,7 +3,7 @@ from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
 
 
 class FloatIO(SingleIO):
-    def __init__(self, name: str, addr: str, default: float = 0, units: str = None, reader: AbstractReaderWriter = None):
+    def __init__(self, name: str, addr: str = None, default: float = 0, units: str = None, reader: AbstractReaderWriter = None):
         super().__init__(name, addr, default, units, reader)
 
     @staticmethod

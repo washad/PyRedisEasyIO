@@ -1,6 +1,6 @@
 import unittest
 from pyrediseasyio.io.io_group import IOGroup
-from pyrediseasyio.io.base import BooleanIO, IntIO, FloatIO, StringIO
+from pyrediseasyio import BooleanIO, IntIO, FloatIO, StringIO
 from assertpy import assert_that
 
 
@@ -29,7 +29,7 @@ class TestGroup2(IOGroup):
 
 class TestGroup3(IOGroup):
     def __init__(self, db=2):
-        self.Bool1 = BooleanIO("Boolean 1", "Bool1", False)
+        self.Bool1 = BooleanIO("Boolean 1", default=False)
         self.Bool2 = BooleanIO("Boolean 2", "Bool2", True)
         self.Int1 = IntIO("Integer 1", "Int1")
         self.Int2 = IntIO("Integer 2", "Int2", default=34)
