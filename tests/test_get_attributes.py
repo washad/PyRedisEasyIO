@@ -13,7 +13,17 @@ class TestGroup(IOGroup):
     Float1 = FloatIO("Float 1", "Float1", default=1.2)
 
 
+class TestGroup2(IOGroup):
+    length = 5
+    Bool1 = BooleanIO("Boolean 1")
+    Bool2 = BooleanIO("Boolean 2")
+    Int1 = IntIO("Integer 1", "Int1")
+    Int2 = IntIO("Integer 2", "Int2", default=34)
+    Float1 = FloatIO("Float 1", "MyName", default=1.2)
+
+
 test_group = TestGroup()
+test_group2 = TestGroup2(namespace="testns")
 
 
 class TestAttributes(unittest.TestCase):
@@ -38,4 +48,8 @@ class TestAttributes(unittest.TestCase):
         attrs = test_group.get_attributes(by_lambda_results=lambda x: x[-1:])
         assert_that(len(attrs)).is_equal_to(1)
         assert_that(attrs[0].value).is_equal_to(34)
+
+    def test_namespace(self):
+        assert_that(test_group2.Bool1.addr).is_equal_to(f'testns_Bool1')
+        assert_that(test_group2.Float1.addr).is_equal_to('testns_MyName')
 

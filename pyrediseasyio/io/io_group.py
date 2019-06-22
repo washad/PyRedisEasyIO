@@ -1,6 +1,5 @@
 from pyrediseasyio.reader_writer import ReaderWriter
 from pyrediseasyio.io.base import SingleIO
-from dominate.tags import div, span, table, tr
 from typing import List, Callable
 import json
 
@@ -9,7 +8,8 @@ class IOGroup(ReaderWriter):
 
     def __init__(self, host='localhost', port=6379, db=0,
                  set_defaults_on_startup: bool = False,
-                 delete_keys_on_startup: bool = False, **kwargs):
+                 delete_keys_on_startup: bool = False,
+                 namespace: str = None, *args, **kwargs):
 
         super().__init__(host=host, port=port, db=db, **kwargs)
         member_names = [d for d in dir(self) if not d.startswith('_')]
@@ -21,8 +21,9 @@ class IOGroup(ReaderWriter):
                     continue
                 attr._reader_writer = self
                 self.members.append(name)
-                if attr.addr is None:
-                    attr.addr = name
+                new_name = name if attr.addr is None else attr.addr
+                attr.addr = new_name if namespace is None else f"{namespace}_{new_name}"
+
                 if delete_keys_on_startup:
                     self.delete_key(attr.addr)
                 if set_defaults_on_startup:
