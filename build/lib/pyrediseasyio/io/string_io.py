@@ -3,8 +3,7 @@ from pyrediseasyio import SingleIO
 
 
 class StringIO(SingleIO):
-    def __init__(self, name: str, addr: str = None,
-                 default: str = '', units: str = None, reader: AbstractReaderWriter = None):
+    def __init__(self, name: str, addr: str, default: str = '', units: str = None, reader: AbstractReaderWriter = None):
         super().__init__(name, addr, default, units, reader)
 
     @staticmethod

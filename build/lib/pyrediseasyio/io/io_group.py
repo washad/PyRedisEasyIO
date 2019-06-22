@@ -21,8 +21,6 @@ class IOGroup(ReaderWriter):
                     continue
                 attr._reader_writer = self
                 self.members.append(name)
-                if attr.addr is None:
-                    attr.addr = name
                 if delete_keys_on_startup:
                     self.delete_key(attr.addr)
                 if set_defaults_on_startup:

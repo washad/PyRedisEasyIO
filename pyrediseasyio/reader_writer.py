@@ -24,7 +24,6 @@ class ReaderWriter(AbstractReaderWriter):
         self._channels = []  # type: List[str]
         self._channels = [channel] if channel is not None else channels
         self._pubsub.subscribe(self._channels)
-        self.get_messages()
 
     def flush_db(self):
         self._server.flushdb()

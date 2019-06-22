@@ -4,7 +4,7 @@ from str2bool import str2bool
 
 
 class BooleanIO(SingleIO):
-    def __init__(self, name: str, addr: str = None, default: bool = False, units: str = None,
+    def __init__(self, name: str, addr: str, default: bool = False, units: str = None,
                  reader: AbstractReaderWriter = None):
         super().__init__(name, addr, default, units, reader)
 

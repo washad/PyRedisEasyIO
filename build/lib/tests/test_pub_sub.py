@@ -34,7 +34,7 @@ class PubSubTests(unittest.TestCase):
         count = 2
         pubsub1, pubsub2 = self.pubsub1, self.pubsub2
         self._publish_many(count)
-        time.sleep(0.2)
+        pubsub2.get_messages()  # bug? doesn't return until the second read
         messages = pubsub2.get_messages()
         assert_that(len(messages)).is_equal_to(count)
         messages = pubsub2.get_messages()

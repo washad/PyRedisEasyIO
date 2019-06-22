@@ -8,8 +8,8 @@ import json
 
 
 class TestGroup(IOGroup):
-    Bool1 = BooleanIO("Boolean 1", units="On/Off")
-    Float1 = FloatIO("Float 1", default=1.23, units="furlongs")
+    Bool1 = BooleanIO("Boolean 1", "Bool1", units="On/Off")
+    Float1 = FloatIO("Float 1", "Float1", default=1.23, units="furlongs")
 
 
 test_group = TestGroup()
