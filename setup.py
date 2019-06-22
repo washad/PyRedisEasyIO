@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyrediseasyio",
-    version="0.0.11",
+    version="0.0.14",
     author="Steve Jackson",
     author_email="washad@gmail.com",
     description="A set of tools for simplifying reading and writing of single values to/from Redis.",

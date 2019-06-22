@@ -12,7 +12,7 @@ class IOGroup(ReaderWriter):
                  delete_keys_on_startup: bool = False, **kwargs):
 
         super().__init__(host=host, port=port, db=db, **kwargs)
-        member_names = [d for d in dir(self) if not d.startswith('__')]
+        member_names = [d for d in dir(self) if not d.startswith('_')]
         self.members = []
         for name in member_names:
             try:
