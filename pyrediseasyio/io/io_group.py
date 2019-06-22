@@ -12,6 +12,8 @@ class IOGroup(ReaderWriter):
                  namespace: str = None, *args, **kwargs):
 
         super().__init__(host=host, port=port, db=db, **kwargs)
+
+        self.namespace = 'easyio' if namespace is None else namespace
         member_names = [d for d in dir(self) if not d.startswith('_')]
         self.members = []
         for name in member_names:

@@ -19,7 +19,6 @@ pyrediseasyio/io/io_group.py
 pyrediseasyio/io/string_io.py
 tests/__init__.py
 tests/test_get_attributes.py
-tests/test_html_io_conversion.py
 tests/test_html_io_group_conversion.py
 tests/test_pub_sub.py
 tests/test_read_write.py

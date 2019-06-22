@@ -12,7 +12,7 @@ class TestGroup(IOGroup):
     Float1 = FloatIO("Float 1", default=1.23, units="furlongs")
 
 
-test_group = TestGroup()
+test_group = TestGroup(namespace='my_ns')
 
 
 def html_equals(html1, html2):
@@ -24,50 +24,68 @@ def html_equals(html1, html2):
 class TestHTML(unittest.TestCase):
 
     def test_boolean_div_conversion(self):
-        h = HMTLIOGroup(test_group, "my_id", "my_namespace").html().render()
+        h = HMTLIOGroup(test_group).html().render()
         expected = '''
-        <div class="my_namespace_io_container" id="my_id_io_container">
-          <div class="my_namespace_io" id="my_id_Bool1_io">
-            <div class="my_namespace_io_name">Boolean 1</div>
-            <div class="my_namespace_io_value" id="my_id_Bool1_io_value" onchange="OnIOValueChange(event)">False</div>
-            <div class="my_namespace_io_units">On/Off</div>
+        <div class="my_ns_io_container" id="my_ns_Bool1_io_container">
+          <div class="my_ns_io" id="my_ns_Bool1">
+            <div class="my_ns_io_name">Boolean 1</div>
+            <div class="my_ns_io_value" id="my_ns_Bool1_io_value" onchange="OnIOValueChange(event)">False</div>
+            <div class="my_ns_io_units">On/Off</div>
           </div>
-          <div class="my_namespace_io" id="my_id_Float1_io">
-            <div class="my_namespace_io_name">Float 1</div>
-            <div class="my_namespace_io_value" id="my_id_Float1_io_value" onchange="OnIOValueChange(event)">1.23</div>
-            <div class="my_namespace_io_units">furlongs</div>
+          <div class="my_ns_io" id="my_ns_Float1">
+            <div class="my_ns_io_name">Float 1</div>
+            <div class="my_ns_io_value" id="my_ns_Float1_io_value" onchange="OnIOValueChange(event)">1.23</div>
+            <div class="my_ns_io_units">furlongs</div>
           </div>
         </div>
         '''
         assert_that(html_equals(h, expected)).is_true()
 
     def test_boolean_table_conversion(self):
-        h = HMTLIOGroup(test_group, "my_id", "my_namespace").html_table().render()
+        h = HMTLIOGroup(test_group).html_table().render()
         expected = '''
-        <table class="my_namespace_io_container" id="my_id_io_container">
-          <tr class="my_namespace_io" id="my_id_Bool1_io">
-            <td class="my_namespace_io_name">Boolean 1</td>
-            <td class="my_namespace_io_value" id="my_id_Bool1_io_value" onchange="OnIOValueChange(event)">False</td>
-            <td class="my_namespace_io_units">On/Off</td>
+        <table class="my_ns_io_container" id="my_ns_Bool1_io_container">
+          <tr class="my_ns_io" id="my_ns_Bool1">
+            <td class="my_ns_io_name">Boolean 1</td>
+            <td class="my_ns_io_value" id="my_ns_Bool1_io_value" onchange="OnIOValueChange(event)">False</td>
+            <td class="my_ns_io_units">On/Off</td>
           </tr>
-          <tr class="my_namespace_io" id="my_id_Float1_io">
-            <td class="my_namespace_io_name">Float 1</td>
-            <td class="my_namespace_io_value" id="my_id_Float1_io_value" onchange="OnIOValueChange(event)">1.23</td>
-            <td class="my_namespace_io_units">furlongs</td>
+          <tr class="my_ns_io" id="my_ns_Float1">
+            <td class="my_ns_io_name">Float 1</td>
+            <td class="my_ns_io_value" id="my_ns_Float1_io_value" onchange="OnIOValueChange(event)">1.23</td>
+            <td class="my_ns_io_units">furlongs</td>
+          </tr>
+        </table>
+        '''
+        assert_that(html_equals(h, expected)).is_true()
+
+    def test_different_id(self):
+        h = HMTLIOGroup(test_group, html_id="NewID").html_table().render()
+        expected = '''
+        <table class="my_ns_io_container" id="NewID">
+          <tr class="my_ns_io" id="my_ns_Bool1">
+            <td class="my_ns_io_name">Boolean 1</td>
+            <td class="my_ns_io_value" id="my_ns_Bool1_io_value" onchange="OnIOValueChange(event)">False</td>
+            <td class="my_ns_io_units">On/Off</td>
+          </tr>
+          <tr class="my_ns_io" id="my_ns_Float1">
+            <td class="my_ns_io_name">Float 1</td>
+            <td class="my_ns_io_value" id="my_ns_Float1_io_value" onchange="OnIOValueChange(event)">1.23</td>
+            <td class="my_ns_io_units">furlongs</td>
           </tr>
         </table>
         '''
         assert_that(html_equals(h, expected)).is_true()
 
     def test_json_dumps_basic(self):
-        h = HMTLIOGroup(test_group, "my_id", "my_namespace")
+        h = HMTLIOGroup(test_group)
         d = h.dumps()
         as_list = json.loads(d)
         assert_that(len(as_list)).is_equal_to(len(test_group))
         assert_that(as_list[0]['name']).is_equal_to('Boolean 1')
 
     def test_json_dumps_by_name(self):
-        h = HMTLIOGroup(test_group, "my_id", "my_namespace")
+        h = HMTLIOGroup(test_group, "new_ns")
         d = h.dumps(by_names=['Bool1'])
         as_list = json.loads(d)
         assert_that(len(as_list)).is_equal_to(1)

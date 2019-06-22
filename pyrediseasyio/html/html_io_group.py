@@ -7,17 +7,10 @@ import json
 
 class HMTLIOGroup:
 
-    def __init__(self, io_group: IOGroup,
-                 html_id_header: str,
-                 namespace: str = 'pyredeio'):
-
-        self.html_id_header = html_id_header
+    def __init__(self, io_group: IOGroup, html_id: str = None):
         self._io_group = io_group
-        self.namespace = namespace
-
-    @property
-    def html_id(self):
-        return f'{self.html_id_header}_io_container'
+        self.namespace = io_group.namespace
+        self.html_id = html_id
 
     def html(self, by_names: List = None, by_type: List = None,
              by_lambda_each: Callable = None, by_lambda_results: Callable = None,
@@ -27,10 +20,11 @@ class HMTLIOGroup:
         cls = f'{self.namespace}_io_container'
         classes = html_classes.append(cls) if html_classes else [cls]
         classes = ' '.join(classes)
+        html_id = f'{attrs[0].addr}_io_container' if self.html_id is None else self.html_id
 
-        with div(cls=classes, id=self.html_id) as container:
+        with div(cls=classes, id=html_id) as container:
             for attr in attrs:
-                HTMLIO(attr, self.html_id_header, self.namespace).html()
+                HTMLIO(attr, self.namespace).html()
         return container
 
     def html_table(self, by_names: List = None, by_type: List = None,
@@ -41,10 +35,11 @@ class HMTLIOGroup:
         cls = f'{self.namespace}_io_container'
         classes = html_classes.append(cls) if html_classes else [cls]
         classes = ' '.join(classes)
+        html_id = f'{attrs[0].addr}_io_container' if self.html_id is None else self.html_id
 
-        with table(cls=classes, id=self.html_id) as container:
+        with table(cls=classes, id=html_id) as container:
             for attr in attrs:
-                HTMLIO(attr, self.html_id_header, self.namespace).html_row(show_units)
+                HTMLIO(attr, self.namespace).html_row(show_units)
         return container
 
     def dumps(self, by_names: List = None, by_type: List = None,
@@ -53,7 +48,8 @@ class HMTLIOGroup:
         attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
 
         def f(a):
-            return dict(id=HTMLIO.html_id_for(self.html_id_header, a), name=a.name, value=a.value, units=a.units)
+            io = HTMLIO(a)
+            return dict(id=io.html_id, name=io.name, value=io.val, units=io.units)
         results = [f(a) for a in attrs]
 
         return json.dumps(results)
