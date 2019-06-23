@@ -11,11 +11,11 @@ pyrediseasyio/html/__init__.py
 pyrediseasyio/html/html_io.py
 pyrediseasyio/html/html_io_group.py
 pyrediseasyio/io/__init__.py
-pyrediseasyio/io/base.py
 pyrediseasyio/io/boolean_io.py
 pyrediseasyio/io/float_io.py
 pyrediseasyio/io/integer_io.py
 pyrediseasyio/io/io_group.py
+pyrediseasyio/io/single_io.py
 pyrediseasyio/io/string_io.py
 tests/__init__.py
 tests/test_get_attributes.py

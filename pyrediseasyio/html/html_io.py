@@ -36,7 +36,7 @@ class HTMLIO:
             td(val, cls=f'easyio_value', id=self.value_id, onchange='OnIOValueChange(event)')
             if show_units:
                 units = '' if units is None else units
-                div(units, cls=f'easyio_units')
+                td(units, cls=f'easyio_units')
         return container
 
 

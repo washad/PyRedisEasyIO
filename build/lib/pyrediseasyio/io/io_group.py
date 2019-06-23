@@ -23,9 +23,10 @@ class IOGroup(ReaderWriter):
                     continue
                 attr._reader_writer = self
                 self.members.append(name)
-                new_name = name if attr.addr is None else attr.addr
-                attr.addr = new_name if namespace is None else f"{namespace}_{new_name}"
-
+                if attr.addr is None:
+                    attr.addr = name
+                if namespace is not None:
+                    attr.namespace = namespace
                 if delete_keys_on_startup:
                     self.delete_key(attr.addr)
                 if set_defaults_on_startup:
