@@ -1,5 +1,5 @@
 from pyrediseasyio.reader_writer import ReaderWriter
-from pyrediseasyio.io.base import SingleIO
+from pyrediseasyio.io.single_io import SingleIO
 from typing import List, Callable
 import json
 

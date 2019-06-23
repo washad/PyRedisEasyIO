@@ -1,4 +1,4 @@
-from pyrediseasyio.io.base import SingleIO
+from pyrediseasyio.io.single_io import SingleIO
 from dominate.tags import div, tr, td
 
 

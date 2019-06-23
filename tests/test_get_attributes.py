@@ -23,7 +23,7 @@ class TestGroup2(IOGroup):
 
 
 test_group = TestGroup()
-test_group2 = TestGroup2(namespace="testns")
+test_group2 = TestGroup2(namespace="Test")
 
 
 class TestAttributes(unittest.TestCase):
@@ -50,6 +50,6 @@ class TestAttributes(unittest.TestCase):
         assert_that(attrs[0].value).is_equal_to(34)
 
     def test_namespace(self):
-        assert_that(test_group2.Bool1.addr).is_equal_to(f'testns_Bool1')
-        assert_that(test_group2.Float1.addr).is_equal_to('testns_MyName')
+        assert_that(test_group2.Bool1.key).is_equal_to(f'TestBool1')
+        assert_that(test_group2.Float1.key).is_equal_to('TestMyName')
 

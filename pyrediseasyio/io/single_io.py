@@ -1,5 +1,4 @@
 from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
-from dominate.tags import div, span, tr, td
 import threading
 import json
 
@@ -8,9 +7,10 @@ lock = threading.Lock()
 
 class SingleIO:
     def __init__(self, name: str, addr: str = None, default: object = None,
-                 units: str = None, reader: AbstractReaderWriter = None):
+                 units: str = None, reader: AbstractReaderWriter = None, namespace: str=None):
         self.name = name
         self.addr = addr
+        self.namespace = namespace
         self._reader_writer = reader
         self.default = default
         self.units = units
@@ -123,6 +123,10 @@ class SingleIO:
         return self.value / other
 
     @property
+    def key(self):
+        return f'{self.namespace}{self.addr}'
+
+    @property
     def value(self):
         return self.read()
 
@@ -132,7 +136,7 @@ class SingleIO:
 
     def publish(self, value, channel: str = None, and_write: bool = False):
         value = self._convert_type(value)
-        data = json.dumps({self.addr: value})
+        data = json.dumps({self.key: value})
         self._reader_writer.publish(data, channel)
         if and_write:
             self.write(value)
@@ -141,7 +145,7 @@ class SingleIO:
         if self._reader_writer is None:
             return None
         with lock:
-            val = self._reader_writer.read(self.addr)
+            val = self._reader_writer.read(self.key)
             if val is None:
                 val = self.default
             val = self._convert_type(val)
@@ -152,5 +156,5 @@ class SingleIO:
             return
         with lock:
             value = self._convert_type(value)
-            self._reader_writer.write(self.addr, value)
+            self._reader_writer.write(self.key, value)
 
