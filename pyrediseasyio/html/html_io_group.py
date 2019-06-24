@@ -1,3 +1,4 @@
+from pyrediseasyio.io.boolean_io import BooleanIO
 from pyrediseasyio.io.io_group import IOGroup
 from pyrediseasyio.html.html_io import HTMLIO
 from typing import List, Callable
@@ -60,7 +61,12 @@ class HMTLIOGroup:
 
         def f(a):
             io = HTMLIO(a)
-            return dict(id=io.value_id, name=io.name, value=io.value, units=io.units)
+            value, display_value = io.value, io.value
+            if isinstance(a, BooleanIO):
+                display_value = a.on_value if value == True else a.off_value
+
+            return dict(id=io.value_id, name=io.name, value=io.value, units=io.units, display_value=display_value)
+
         results = [f(a) for a in attrs]
 
         return json.dumps(results)

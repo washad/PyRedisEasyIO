@@ -1,4 +1,4 @@
-from pyrediseasyio import SingleIO
+from pyrediseasyio.io.single_io import SingleIO
 from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
 
 

@@ -1,5 +1,5 @@
 from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
-from pyrediseasyio import SingleIO
+from pyrediseasyio.io.single_io import SingleIO
 
 
 class StringIO(SingleIO):
@@ -10,3 +10,4 @@ class StringIO(SingleIO):
     @staticmethod
     def _convert_type(value):
         return str(value)
+

@@ -1,12 +1,14 @@
-from pyrediseasyio import SingleIO
+from pyrediseasyio.io.single_io import SingleIO
 from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
 from str2bool import str2bool
 
 
 class BooleanIO(SingleIO):
     def __init__(self, name: str, addr: str = None, default: bool = False, units: str = None,
-                 reader: AbstractReaderWriter = None):
+                 reader: AbstractReaderWriter = None, on_value: str = "On", off_value: str = "Off"):
         super().__init__(name, addr, default, units, reader)
+        self.on_value = on_value
+        self.off_value = off_value
 
     @staticmethod
     def _convert_type(value):
@@ -22,3 +24,4 @@ class BooleanIO(SingleIO):
     @property
     def value(self) -> bool:
         return super().value
+

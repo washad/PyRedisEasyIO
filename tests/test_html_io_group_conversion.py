@@ -27,14 +27,14 @@ class TestHTML(unittest.TestCase):
         h = HMTLIOGroup(test_group).html().render()
         expected = '''
         <div class="easyio_io_container" id="Pin1Bool1_io_container">
-          <div class="easyio_io" id="Pin1Bool1_io">
+          <div class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <div class="easyio_name">Boolean 1</div>
-            <div class="easyio_value" id="Pin1Bool1_io_value" onchange="OnIOValueChange(event)">False</div>
+            <div class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</div>
             <div class="easyio_units">On/Off</div>
           </div>
-          <div class="easyio_io" id="Pin1Float1_io">
+          <div class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <div class="easyio_name">Float 1</div>
-            <div class="easyio_value" id="Pin1Float1_io_value" onchange="OnIOValueChange(event)">1.23</div>
+            <div class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</div>
             <div class="easyio_units">furlongs</div>
           </div>
         </div>
@@ -45,32 +45,33 @@ class TestHTML(unittest.TestCase):
         h = HMTLIOGroup(test_group).html_table().render()
         expected = '''
         <table class="Pin1_io_container" id="Bool1_io_container">
-          <tr class="easyio_io" id="Pin1Bool1_io">
+          <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <td class="easyio_name">Boolean 1</td>
-            <td class="easyio_value" id="Pin1Bool1_io_value" onchange="OnIOValueChange(event)">False</td>
+            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
             <td class="easyio_units">On/Off</td>
           </tr>
-          <tr class="easyio_io" id="Pin1Float1_io">
+          <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <td class="easyio_name">Float 1</td>
-            <td class="easyio_value" id="Pin1Float1_io_value" onchange="OnIOValueChange(event)">1.23</td>
+            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
             <td class="easyio_units">furlongs</td>
           </tr>
         </table>
         '''
         assert_that(html_equals(h, expected)).is_true()
 
+
     def test_different_id(self):
         h = HMTLIOGroup(test_group, html_id="NewID").html_table().render()
         expected = '''
         <table class="Pin1_io_container" id="NewID">
-          <tr class="easyio_io" id="Pin1Bool1_io">
+          <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <td class="easyio_name">Boolean 1</td>
-            <td class="easyio_value" id="Pin1Bool1_io_value" onchange="OnIOValueChange(event)">False</td>
+            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
             <td class="easyio_units">On/Off</td>
           </tr>
-          <tr class="easyio_io" id="Pin1Float1_io">
+          <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <td class="easyio_name">Float 1</td>
-            <td class="easyio_value" id="Pin1Float1_io_value" onchange="OnIOValueChange(event)">1.23</td>
+            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
             <td class="easyio_units">furlongs</td>
           </tr>
         </table>
@@ -80,9 +81,12 @@ class TestHTML(unittest.TestCase):
     def test_json_dumps_basic(self):
         h = HMTLIOGroup(test_group)
         d = h.dumps()
+        print(d)
         as_list = json.loads(d)
+        first = as_list[0]
         assert_that(len(as_list)).is_equal_to(len(test_group))
-        assert_that(as_list[0]['name']).is_equal_to('Boolean 1')
+        assert_that(first['name']).is_equal_to('Boolean 1')
+        assert_that(first['display_value']).is_equal_to("Off")
 
 
     def test_json_dumps_by_name(self):
