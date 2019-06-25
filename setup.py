@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/washad/PyRedisEasyIO",
-    packages=setuptools.find_packages(),
+    packages=['dominate', 'redis', 'str2bool'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

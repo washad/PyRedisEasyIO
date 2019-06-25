@@ -1,0 +1,24 @@
+div.easyio_name, div.easyio_value, div.easyio_value, div.easyio_units,
+div.easyio_set, div.easyio_reset{
+    display: inline-block;
+}
+
+div.easyio_name{
+    width:20%;
+}
+
+div.easyio_value{
+    width: 20%;
+}
+
+div.easyio_units{
+    width: 10%;
+}
+
+button.easyio_set, button.easyio_reset{
+    margin: 8px;
+}
+
+div.easyio_io{
+    border: 1px solid blue
+}

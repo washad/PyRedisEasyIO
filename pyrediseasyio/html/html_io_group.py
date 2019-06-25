@@ -14,42 +14,46 @@ class HMTLIOGroup:
         self.html_id = html_id
 
 
-
-    def html(self, by_names: List = None, by_type: List = None,
-             by_lambda_each: Callable = None, by_lambda_results: Callable = None,
-             html_classes: List = None, show_units: bool=True):
+    def html(self,
+             by_names: List = None,
+             by_type: List = None,
+             by_lambda_each: Callable = None,
+             by_lambda_results: Callable = None,
+             show_units: bool = True,
+             show_set_reset: bool = False,
+             set_text: str = "On",
+             reset_text: str = "Off"):
 
         attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
-        cls = f'easyio_io_container'
-        classes = html_classes.append(cls) if html_classes else [cls]
-        classes = ' '.join(classes)
         html_id = f'{attrs[0].key}_io_container' if self.html_id is None else self.html_id
 
-        with div(cls=classes, id=html_id) as container:
+        with div(cls=f'easy_io_container', id=html_id) as container:
             for attr in attrs:
-                HTMLIO(attr).html(show_units)
+                HTMLIO(attr).html(show_units, show_set_reset, set_text, reset_text)
         return container
 
 
 
-    def html_table(self, by_names: List = None, by_type: List = None,
-                   by_lambda_each: Callable = None, by_lambda_results: Callable = None,
-                   html_classes: List = None, show_units: bool = True,
-                   headers: List = None):
+    def html_table(self, headers: List[str] = None,
+                   by_names: List = None,
+                   by_type: List = None,
+                   by_lambda_each: Callable = None,
+                   by_lambda_results: Callable = None,
+                   show_units: bool = True,
+                   show_set_reset: bool = False,
+                   set_text: str = "On",
+                   reset_text: str = "On"):
 
         attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
-        cls = f'{self.namespace}_io_container'
-        classes = html_classes.append(cls) if html_classes else [cls]
-        classes = ' '.join(classes)
         html_id = f'{attrs[0].addr}_io_container' if self.html_id is None else self.html_id
 
-        with table(cls=classes, id=html_id) as container:
+        with table(cls=f'easy_io_container', id=html_id) as container:
             if headers:
                 with tr():
                     for h in headers:
                         th(h)
             for attr in attrs:
-                HTMLIO(attr).html_row(show_units)
+                HTMLIO(attr).html_row(show_units, show_set_reset, set_text, reset_text)
         return container
 
 

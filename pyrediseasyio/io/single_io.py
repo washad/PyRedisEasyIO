@@ -7,7 +7,7 @@ lock = threading.Lock()
 
 class SingleIO:
     def __init__(self, name: str, addr: str = None, default: object = None,
-                 units: str = None, reader: AbstractReaderWriter = None, namespace: str=None):
+                 units: str = None, reader: AbstractReaderWriter = None, namespace: str = None):
         self.name = name
         self.addr = addr
         self.namespace = namespace

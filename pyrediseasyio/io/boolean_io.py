@@ -25,3 +25,9 @@ class BooleanIO(SingleIO):
     def value(self) -> bool:
         return super().value
 
+
+if __name__ == "__main__":
+    io = BooleanIO("Test")
+    print(type(io))
+    print(BooleanIO)
+    print(type(io) == BooleanIO)
