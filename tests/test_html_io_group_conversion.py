@@ -26,7 +26,7 @@ class TestHTML(unittest.TestCase):
     def test_boolean_div_conversion(self):
         h = HMTLIOGroup(test_group).html().render()
         expected = '''
-        <div class="easyio_io_container" id="Pin1Bool1_io_container">
+        <div class="easyio_container" id="Pin1Bool1_io_container">
           <div class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <div class="easyio_name">Boolean 1</div>
             <div class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</div>
@@ -44,7 +44,7 @@ class TestHTML(unittest.TestCase):
     def test_boolean_table_conversion(self):
         h = HMTLIOGroup(test_group).html_table().render()
         expected = '''
-        <table class="Pin1_io_container" id="Bool1_io_container">
+        <table class="easyio_container" id="Bool1_io_container">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <td class="easyio_name">Boolean 1</td>
             <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
@@ -63,7 +63,7 @@ class TestHTML(unittest.TestCase):
     def test_different_id(self):
         h = HMTLIOGroup(test_group, html_id="NewID").html_table().render()
         expected = '''
-        <table class="Pin1_io_container" id="NewID">
+        <table class="easyio_container" id="NewID">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <td class="easyio_name">Boolean 1</td>
             <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>

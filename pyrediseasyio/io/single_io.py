@@ -124,6 +124,8 @@ class SingleIO:
 
     @property
     def key(self):
+        if self.namespace is None:
+            return self.addr
         return f'{self.namespace}{self.addr}'
 
     @property

@@ -1,0 +1,53 @@
+.flex-container {
+  display: flex;
+}
+
+div.easyio_name, div.easyio_value, div.easyio_value, div.easyio_units,
+div.easyio_set, div.easyio_reset, div.easyio_header_cell, div.easyio_btn_cell{
+    display: inline-block;
+}
+
+.easyio_name, .easyio_value, .easyio_value, .easyio_units, .easyio_header_cell{
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+div.easyio_header_cell{
+    font-weight: bold;
+}
+
+div.easyio_name, div.easyio_value, div.easyio_header_cell{
+    min-width: 150px;
+}
+
+div.easyio_units{
+    width: 80px;
+}
+
+button.easyio_set, button.easyio_reset{
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+div.easyio_io{
+    padding: 5px;
+    border: 1px solid darkorange;
+}
+
+table.easyio_container{
+    border-collapse: collapse;
+}
+
+table.easyio_container, tr.easyio_io{
+    text-align: left;
+    border: 1px solid darkorange;
+}
+
+td.easyio_btn_cell{
+    padding: 6px;
+}
+
+td button{
+    padding: 4px;
+}
