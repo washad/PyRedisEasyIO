@@ -61,7 +61,7 @@ class TestHTML(unittest.TestCase):
 
 
     def test_different_id(self):
-        h = HMTLIOGroup(test_group, html_id="NewID").html_table().render()
+        h = HMTLIOGroup(test_group).html_table(html_id="NewID").render()
         expected = '''
         <table class="easyio_container" id="NewID">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
@@ -81,7 +81,6 @@ class TestHTML(unittest.TestCase):
     def test_json_dumps_basic(self):
         h = HMTLIOGroup(test_group)
         d = h.dumps()
-        print(d)
         as_list = json.loads(d)
         first = as_list[0]
         assert_that(len(as_list)).is_equal_to(len(test_group))
@@ -90,8 +89,7 @@ class TestHTML(unittest.TestCase):
 
 
     def test_json_dumps_by_name(self):
-        h = HMTLIOGroup(test_group, "new_ns")
+        h = HMTLIOGroup(test_group)
         d = h.dumps(by_names=['Bool1'])
-        print(d)
         as_list = json.loads(d)
         assert_that(len(as_list)).is_equal_to(1)

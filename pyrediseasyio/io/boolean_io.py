@@ -21,6 +21,13 @@ class BooleanIO(SingleIO):
     def __bool__(self):
         return self.value
 
+
+    @property
+    def display_value(self):
+        val = self.value
+        dval = self.on_value if val else self.off_value
+        return dval
+
     @property
     def value(self) -> bool:
         return super().value

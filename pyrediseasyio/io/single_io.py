@@ -123,6 +123,10 @@ class SingleIO:
         return self.value / other
 
     @property
+    def display_value(self):
+        return self.value
+
+    @property
     def key(self):
         if self.namespace is None:
             return self.addr

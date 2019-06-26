@@ -71,11 +71,9 @@ class HMTLIOGroup:
 
         def f(a):
             io = HTMLIO(a)
-            value, display_value = io.value, io.value
-            if isinstance(a, BooleanIO):
-                display_value = a.on_value if value == True else a.off_value
-
-            return dict(id=io.value_id, name=io.name, value=io.value, units=io.units, display_value=display_value)
+            value, display_value = io.value, a.display_value
+            return dict(id=io.value_id, name=io.name, value=io.value, units=io.units, display_value=display_value,
+                        namespace=a.namespace, addr=a.addr)
 
         results = [f(a) for a in attrs]
 
