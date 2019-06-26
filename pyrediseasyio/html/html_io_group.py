@@ -9,10 +9,9 @@ import json
 
 class HMTLIOGroup:
 
-    def __init__(self, io_group: IOGroup, html_id: str = None):
+    def __init__(self, io_group: IOGroup):
         self._io_group = io_group
         self.namespace = io_group.namespace
-        self.html_id = html_id
 
 
     def _heading(self, headers, row_tag: dominate.tags, cell_tag: dominate.tags):
@@ -29,10 +28,11 @@ class HMTLIOGroup:
              show_units: bool = True,
              show_set_reset: bool = False,
              set_text: str = "On",
-             reset_text: str = "Off"):
+             reset_text: str = "Off",
+             html_id: str = None):
 
         attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
-        html_id = f'{attrs[0].key}_io_container' if self.html_id is None else self.html_id
+        html_id = f'{attrs[0].key}_io_container' if html_id is None else html_id
 
         with div(cls=f'easyio_container', id=html_id) as container:
             self._heading(headers, div, div)
@@ -50,10 +50,11 @@ class HMTLIOGroup:
                    show_units: bool = True,
                    show_set_reset: bool = False,
                    set_text: str = "On",
-                   reset_text: str = "Off"):
+                   reset_text: str = "Off",
+                   html_id: str = None):
 
         attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
-        html_id = f'{attrs[0].addr}_io_container' if self.html_id is None else self.html_id
+        html_id = f'{attrs[0].addr}_io_container' if html_id is None else html_id
 
         with table(cls=f'easyio_container', id=html_id) as container:
             self._heading(headers, tr, th)
