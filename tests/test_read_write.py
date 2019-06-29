@@ -12,7 +12,7 @@ class TestGroup(IOGroup):
     Float1 = FloatIO("Float 1", "Float1", default=1.2)
 
     def __init__(self):
-        super().__init__(channel="TestChannel", delete_keys_on_startup = True)
+        super().__init__(channel="TestChannel")
 
 
 class TestGroup2(IOGroup):
@@ -24,7 +24,7 @@ class TestGroup2(IOGroup):
     Message1 = StringIO("String 1", "String1")
 
     def __init__(self):
-        super().__init__(channel="TestChannel", delete_keys_on_startup=True)
+        super().__init__(channel="TestChannel")
 
 
 class TestGroup3(IOGroup):
@@ -34,7 +34,7 @@ class TestGroup3(IOGroup):
         self.Int1 = IntIO("Integer 1", "Int1")
         self.Int2 = IntIO("Integer 2", "Int2", default=34)
         self.Float1 = FloatIO("Float 1", "Float1", default=1.2)
-        super().__init__(db=db, delete_keys_on_startup=True)
+        super().__init__(db=db)
 
 
 class TestReadWrite(unittest.TestCase):
@@ -144,4 +144,18 @@ class TestReadWrite(unittest.TestCase):
             break
 
         assert_that("This is a test" in msg[1]).is_true()
+
+
+    def test_values_can_be_set_to_default(self):
+        group1 = self.group
+        group1.Bool1 = True
+        group1.Float1 = 99
+
+        assert_that(group1.Bool1).is_true()
+        assert_that(group1.Float1).is_equal_to(99)
+
+        group1.set_all_to_defaults()
+        assert_that(group1.Bool1).is_false()
+        assert_that(group1.Float1).is_equal_to(1.2)
+
 

@@ -7,8 +7,6 @@ import json
 class IOGroup(ReaderWriter):
 
     def __init__(self, host='localhost', port=6379, db=0,
-                 set_defaults_on_startup: bool = False,
-                 delete_keys_on_startup: bool = False,
                  namespace: str = None, *args, **kwargs):
 
         super().__init__(host=host, port=port, db=db, **kwargs)
@@ -27,15 +25,13 @@ class IOGroup(ReaderWriter):
                     attr.addr = name
                 if namespace is not None:
                     attr.namespace = namespace
-                if delete_keys_on_startup:
-                    self.delete_key(attr.addr)
-                if set_defaults_on_startup:
-                    attr.write(attr.default)
             except AttributeError:
                 pass
 
+
     def __len__(self):
         return len(self.members)
+
 
     def __setattr__(self, key, value):
         if hasattr(self, 'members') and key in self.members:
@@ -43,6 +39,14 @@ class IOGroup(ReaderWriter):
             attr.write(value)
             return
         return super().__setattr__(key, value)
+
+
+    def delete_keys(self):
+        """ Delete all keys from memory."""
+        attrs = self.get_attributes()
+        for attr in attrs:
+            self.delete_key(attr.addr)
+
 
     def dump(self, key: str) -> str:
         """
@@ -55,6 +59,7 @@ class IOGroup(ReaderWriter):
         self.write(key, s)
         return s
 
+
     def dumps(self, by_names: List = None, by_type: List = None, by_lambda: Callable = None) -> str:
         """
         Returns a json string containing a list of dict(name/addr/value) of all members.
@@ -62,6 +67,7 @@ class IOGroup(ReaderWriter):
         attrs = self.get_attributes(by_names, by_type, by_lambda)
         members = [dict(name=attr.name, addr=attr.addr, value=attr.value) for attr in attrs]
         return json.dumps(members)
+
 
     def get_attributes(self, by_names: List = None, by_type: List = None,
                        by_lambda_each: Callable = None, by_lambda_results: Callable = None):
@@ -78,8 +84,8 @@ class IOGroup(ReaderWriter):
         return attrs
 
 
-
-
-
-
-
+    def set_all_to_defaults(self):
+        """ Set the value for all members to their defaults."""
+        attrs = self.get_attributes()
+        for attr in attrs:
+            attr.write(attr.default)
