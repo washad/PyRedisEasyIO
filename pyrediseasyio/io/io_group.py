@@ -106,6 +106,13 @@ class IOGroup(ReaderWriter):
         return attrs
 
 
+    def set_all_to_defaults(self):
+        """ Set the value for all members to their defaults."""
+        attrs = self.get_attributes()
+        for attr in attrs:
+            attr.write(attr.default)
+
+
 
 
 

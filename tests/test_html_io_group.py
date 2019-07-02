@@ -20,6 +20,7 @@ def html_equals(html1, html2):
     lines1 = [line for line in lines1 if len(line) > 0]
     lines2 = [line.strip() for line in diff_utils.html2list(html2)]
     lines2 = [line for line in lines2 if len(line) > 0]
+    diffs = [(line[0], line[1]) for line in zip(lines1, lines2) if line[0] != line[1]]
     return lines1 == lines2
 
 
@@ -93,7 +94,7 @@ class TestHTML(unittest.TestCase):
               <button class="easyio_set" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',true)">SetMe</button>
             </td>
             <td class="easyio_btn_cell easyio_rst_btn_cell">
-              <button class="easyio_reset" onclick="EasyIOReset('Pin1','Bool1','Pin1Bool1',false)">Reset</button>
+              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',false)">Reset</button>
             </td>
           </tr>
           <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
@@ -103,7 +104,7 @@ class TestHTML(unittest.TestCase):
               <button class="easyio_set" onclick="EasyIOSet('Pin1','Float1','Pin1Float1',1.23)">SetMe</button>
             </td>
             <td class="easyio_btn_cell easyio_rst_btn_cell">
-              <button class="easyio_reset" onclick="EasyIOReset('Pin1','Float1','Pin1Float1',0)">Reset</button>
+              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Float1','Pin1Float1',0)">Reset</button>
             </td>
           </tr>
         </table>
