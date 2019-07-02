@@ -20,54 +20,52 @@ class HMTLIOGroup:
                 for h in headers:
                     cell_tag(h, cls="easyio_header_cell")
 
-    def html(self, headers: List[str] = None,
-             by_names: List = None,
-             by_type: List = None,
-             by_lambda_each: Callable = None,
-             by_lambda_results: Callable = None,
-             show_units: bool = True,
-             show_set_reset: bool = False,
-             set_text: str = "On",
-             reset_text: str = "Off",
-             html_id: str = None):
 
-        attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
+    def html(self, headers: List[str] = None, html_id: str = None, **kwargs):
+        """
+        :param headers: An optional list of headers that can be applied to the table
+        :param html_id: An optional ID that can be given to the table
+        :param kwargs: (by_names, by_type, by_lambda_each, by_lambda_results,
+                        show_units, show_set, show_reset, set_text, reset_text)
+        :return:    Returns a dominate table object that can be rendered to html.
+        """
+        attrs = self._io_group.get_attributes(**kwargs)
         html_id = f'{attrs[0].key}_io_container' if html_id is None else html_id
 
         with div(cls=f'easyio_container', id=html_id) as container:
             self._heading(headers, div, div)
             for attr in attrs:
-                HTMLIO(attr).html(show_units, show_set_reset, show_set_reset, set_text, reset_text)
+                HTMLIO(attr).html(**kwargs)
         return container
 
 
 
-    def html_table(self, headers: List[str] = None,
-                   by_names: List = None,
-                   by_type: List = None,
-                   by_lambda_each: Callable = None,
-                   by_lambda_results: Callable = None,
-                   show_units: bool = True,
-                   show_set_reset: bool = False,
-                   set_text: str = "On",
-                   reset_text: str = "Off",
-                   html_id: str = None):
-
-        attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
+    def html_table(self, headers: List[str] = None, html_id: str = None, **kwargs) -> table:
+        """
+        :param headers: An optional list of headers that can be applied to the table
+        :param html_id: An optional ID that can be given to the table
+        :param kwargs: (by_names, by_type, by_lambda_each, by_lambda_results,
+                        show_units, show_set, show_reset, set_text, reset_text)
+        :return:    Returns a dominate table object that can be rendered to html.
+        """
+        attrs = self._io_group.get_attributes(**kwargs)
         html_id = f'{attrs[0].addr}_io_container' if html_id is None else html_id
 
         with table(cls=f'easyio_container', id=html_id) as container:
             self._heading(headers, tr, th)
             for attr in attrs:
-                HTMLIO(attr).html_row(show_units, show_set_reset, show_set_reset, set_text, reset_text)
+                HTMLIO(attr).html_row(**kwargs)
         return container
 
 
 
-    def dumps(self, by_names: List = None, by_type: List = None,
-              by_lambda_each: Callable = None, by_lambda_results: Callable = None):
-
-        attrs = self._io_group.get_attributes(by_names, by_type, by_lambda_each, by_lambda_results)
+    def dumps(self, **kwargs):
+        """
+        Create a json string giving relevant information about each member of the IO Group useful at the web side.
+        :param kwargs: (by_names, by_type, by_lambda_each, by_lambda_results)
+        :return:
+        """
+        attrs = self._io_group.get_attributes(**kwargs)
 
         def f(a):
             io = HTMLIO(a)

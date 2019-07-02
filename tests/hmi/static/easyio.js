@@ -1,17 +1,9 @@
 
 
-function EasyIOSet(ns, addr, id){
+function EasyIOSet(ns, addr, id, value){
     let xhttp = new XMLHttpRequest();
     let element = document.getElementById(id);
-    url = `/api/io/${id}/true`;
-    xhttp.open("POST", url, true);
-    xhttp.send();
-}
-
-function EasyIOReset(ns, addr, id){
-    let xhttp = new XMLHttpRequest();
-    let element = document.getElementById(id);
-    url = `/api/io/${id}/false`;
+    url = `/api/io/${id}/${value}`;
     xhttp.open("POST", url, true);
     xhttp.send();
 }

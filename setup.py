@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pyrediseasyio",
-    version="0.0.24",
+    version="0.0.25",
     author="Steve Jackson",
     author_email="washad@gmail.com",
     description="A set of tools for simplifying reading and writing of single values to/from Redis.",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/washad/PyRedisEasyIO",
     packages=setuptools.find_packages(),
-    install_requires=['dominate', 'redis', 'str2bool'],
+    install_requires=['wheel', 'dominate', 'redis', 'str2bool'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

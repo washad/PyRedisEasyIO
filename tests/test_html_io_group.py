@@ -16,15 +16,17 @@ test_group = TestGroup(namespace='Pin1')
 
 
 def html_equals(html1, html2):
-    lines1 = [l for l in diff_utils.html2list(html1) if l != '\n ' and l != ' ' and l != '\n']
-    lines2 = [l for l in diff_utils.html2list(html2) if l != '\n ' and l != ' ' and l != '\n']
+    lines1 = [line.strip() for line in diff_utils.html2list(html1)]
+    lines1 = [line for line in lines1 if len(line) > 0]
+    lines2 = [line.strip() for line in diff_utils.html2list(html2)]
+    lines2 = [line for line in lines2 if len(line) > 0]
     return lines1 == lines2
 
 
 class TestHTML(unittest.TestCase):
 
     def test_boolean_div_conversion(self):
-        h = HMTLIOGroup(test_group).html().render()
+        h = HMTLIOGroup(test_group).html(show_units=True).render()
         expected = '''
         <div class="easyio_container" id="Pin1Bool1_io_container">
           <div class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
@@ -42,7 +44,7 @@ class TestHTML(unittest.TestCase):
         assert_that(html_equals(h, expected)).is_true()
 
     def test_boolean_table_conversion(self):
-        h = HMTLIOGroup(test_group).html_table().render()
+        h = HMTLIOGroup(test_group).html_table(show_units=True).render()
         expected = '''
         <table class="easyio_container" id="Bool1_io_container">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
@@ -61,7 +63,7 @@ class TestHTML(unittest.TestCase):
 
 
     def test_different_id(self):
-        h = HMTLIOGroup(test_group).html_table(html_id="NewID").render()
+        h = HMTLIOGroup(test_group).html_table(html_id="NewID", show_units=True).render()
         expected = '''
         <table class="easyio_container" id="NewID">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
@@ -77,6 +79,38 @@ class TestHTML(unittest.TestCase):
         </table>
         '''
         assert_that(html_equals(h, expected)).is_true()
+
+
+    def test_set_reset_true(self):
+        h = HMTLIOGroup(test_group).html_table(
+            html_id="NewID", show_units=False, show_set=True, show_reset=True, set_text="SetMe").render()
+        expected = '''
+        <table class="easyio_container" id="NewID">
+          <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
+            <td class="easyio_name">Boolean 1</td>
+            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
+            <td class="easyio_btn_cell easyio_set_btn_cell">
+              <button class="easyio_set" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',true)">SetMe</button>
+            </td>
+            <td class="easyio_btn_cell easyio_rst_btn_cell">
+              <button class="easyio_reset" onclick="EasyIOReset('Pin1','Bool1','Pin1Bool1',false)">Reset</button>
+            </td>
+          </tr>
+          <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
+            <td class="easyio_name">Float 1</td>
+            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
+            <td class="easyio_btn_cell easyio_set_btn_cell">
+              <button class="easyio_set" onclick="EasyIOSet('Pin1','Float1','Pin1Float1',1.23)">SetMe</button>
+            </td>
+            <td class="easyio_btn_cell easyio_rst_btn_cell">
+              <button class="easyio_reset" onclick="EasyIOReset('Pin1','Float1','Pin1Float1',0)">Reset</button>
+            </td>
+          </tr>
+        </table>
+        '''
+        assert_that(html_equals(h, expected)).is_true()
+
+
 
     def test_json_dumps_basic(self):
         h = HMTLIOGroup(test_group)

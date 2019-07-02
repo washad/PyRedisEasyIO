@@ -63,16 +63,44 @@ class IOGroup(ReaderWriter):
         members = [dict(name=attr.name, addr=attr.addr, value=attr.value) for attr in attrs]
         return json.dumps(members)
 
-    def get_attributes(self, by_names: List = None, by_type: List = None,
-                       by_lambda_each: Callable = None, by_lambda_results: Callable = None):
+    def get_attribute(self, name: str=None, addr: str=None, key: str=None):
+        if name:
+            try:
+                return getattr(self, name)
+            except AttributeError:
+                return None
+        attr = None
+        if addr:
+            attr = self.get_attributes(by_lambda_each=lambda x: x.addr == addr)
+        if key:
+            attr = self.get_attributes(by_lambda_each=lambda x: x.key == key)
+        if attr is not None and len(attr) > 0:
+            return attr[0]
+        return None
+
+    def get_attributes(self, *args, **kwargs):
+        """
+        Gets a list of 'SingleIO' attributes for the group
+        :param kwargs:
+         - by_names: List[str]: Filters the list by attribute name
+         - by_type:  List[SingleIO]: Filter the list by io type
+         - by_lambda_each: Callable: Applies a filter to each attribute
+         - by_lambda_results: Callable: Applies a filter to the resulting list (good for splicing)
+        :return: List[SingleIO]
+        """
+        by_names = kwargs.get('by_names')
+        by_type = kwargs.get('by_type')
+        by_lambda_each = kwargs.get('by_lambda_each')
+        by_lambda_results = kwargs.get('by_lambda_results')
 
         names = self.members if by_names is None else by_names
         attrs = [getattr(self, name) for name in names]
-        if by_type:
+
+        if kwargs.get('by_type'):
             attrs = [a for a in attrs if type(a) in by_type]
-        if by_lambda_each:
+        if kwargs.get('by_lambda_each'):
             attrs = [a for a in attrs if by_lambda_each(a)]
-        if by_lambda_results:
+        if kwargs.get('by_lambda_results'):
             attrs = by_lambda_results(attrs)
 
         return attrs

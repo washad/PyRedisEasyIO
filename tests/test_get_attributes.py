@@ -13,6 +13,7 @@ class TestGroup(IOGroup):
     Float1 = FloatIO("Float 1", "Float1", default=1.2)
 
 
+
 class TestGroup2(IOGroup):
     length = 5
     Bool1 = BooleanIO("Boolean 1")
@@ -20,6 +21,7 @@ class TestGroup2(IOGroup):
     Int1 = IntIO("Integer 1", "Int1")
     Int2 = IntIO("Integer 2", "Int2", default=34)
     Float1 = FloatIO("Float 1", "MyName", default=1.2)
+    Float2 = FloatIO("Float 2", "OtherAddr")
 
 
 test_group = TestGroup()
@@ -53,3 +55,15 @@ class TestAttributes(unittest.TestCase):
         assert_that(test_group2.Bool1.key).is_equal_to(f'TestBool1')
         assert_that(test_group2.Float1.key).is_equal_to('TestMyName')
 
+    def test_can_get_single_attribute(self):
+        name_attr = test_group2.get_attribute(name="Float2")
+        addr_attr = test_group2.get_attribute(addr="OtherAddr")
+        key_attr = test_group2.get_attribute(key='TestOtherAddr')
+
+        attrs = [name_attr, addr_attr, key_attr]
+        for attr in attrs:
+            assert_that(attr).is_not_none()
+            assert_that(attr).is_instance_of(FloatIO)
+            assert_that(attr).name = "Float2"
+
+        assert_that(test_group2.get_attribute(name="NotExists")).is_none()

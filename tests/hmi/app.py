@@ -1,7 +1,7 @@
 from flask import Flask, Response
-from pyrediseasyio import IOGroup, HMTLIOGroup
+from pyrediseasyio import IOGroup, HMTLIOGroup, HTMLIO
 from pyrediseasyio import StringIO, BooleanIO, FloatIO, IntIO
-from dominate.tags import head, script, body, link, div
+from dominate.tags import head, script, body, link, div, table
 import dominate
 import random
 
@@ -15,6 +15,7 @@ class TestGroup(IOGroup):
     Age = IntIO("Age", default=48, units="years")
     IsProgrammer = BooleanIO("Is a programmer", on_value="Yes", off_value="No", default=True)
     IsFather = BooleanIO("Is a father", on_value="Definately", off_value="Not yet", default=True)
+    BathroomBreaks = IntIO("Bathroom breaks", default=3)
 
 test_group = TestGroup()
 html_test_group =HMTLIOGroup(test_group)
@@ -30,12 +31,15 @@ with doc.body:
     with div(cls="flex-container"):
         with div(cls="w3-card w3-margin w3-border w3-padding"):
             html_test_group.html_table(
-                headers=["ITEM", "VALUE", "UNITS", "", ""],
-                show_set_reset=True)
+                headers=["ITEM", "VALUE", "UNITS"],
+                show_units=True)
         with div(cls="w3-card w3-margin w3-border w3-padding"):
             html_test_group.html(
                 headers=["ITEM", "VALUE", "UNITS"],
-                show_set_reset=True)
+                show_set=False, show_reset=False, show_units=True, by_lambda_each=lambda x : 'Bathroom' not in x.addr)
+    with table():
+        HTMLIO(test_group.BathroomBreaks).html_row(show_reset=True, show_set=True, show_value=False)
+
 
 
 
