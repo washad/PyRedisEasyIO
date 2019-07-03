@@ -43,6 +43,7 @@ class TestAttributes(unittest.TestCase):
         assert_that(len(attrs)).is_equal_to(3)
 
     def test_limit_by_io_filter(self):
+        test_group.Float1 = 1.2
         attrs = test_group.get_attributes(by_lambda_each=lambda x: x.value == 1.2)
         assert_that(len(attrs)).is_equal_to(1)
 

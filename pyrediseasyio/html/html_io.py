@@ -22,7 +22,7 @@ class HTMLIO:
         self.units = io.units
         self.namespace = io.namespace
         self.default_set_value = True if isinstance(io, BooleanIO) or isinstance(io, TriggerIO) else io.default
-        self.default_reset_value = True if isinstance(io, BooleanIO) or isinstance(io, TriggerIO) else 0
+        self.default_reset_value = False if isinstance(io, BooleanIO) or isinstance(io, TriggerIO) else 0
 
     def build(self, row_tag: dominate.tags, cell_tag: dominate.tags, **kwargs):
         """
