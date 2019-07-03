@@ -1,14 +1,25 @@
 from pyrediseasyio.io.single_io import SingleIO
-from pyrediseasyio.abstract_reader_writer import AbstractReaderWriter
 from str2bool import str2bool
+import gettext
+
+_ = gettext.gettext
 
 
 class BooleanIO(SingleIO):
-    def __init__(self, name: str, addr: str = None, default: bool = False, units: str = None,
-                 reader: AbstractReaderWriter = None, on_value: str = "On", off_value: str = "Off"):
-        super().__init__(name, addr, default, units, reader)
-        self.on_value = on_value
-        self.off_value = off_value
+    def __init__(self, name: str, addr: str = None, default: bool = False, **kwargs):
+        """
+        :param name:    A human readable name to give to the IO
+        :param addr:    An optional address (key), if not given, them namespace + member name will be used
+        :param default: The value to assign to the IO if no key is found during read
+        :param kwargs:
+         - units:       str: Optional units to assign to the IO
+         - on_value:    str: The 'display_value' property will optionally return this value when the value is True
+         - on_value:    str: The 'display_value' property will optionally return this value when the value is False
+         - namespace:   str: Optional leading text to apply to the address to makes its key unique
+        """
+        super().__init__(name, addr, default, **kwargs)
+        self.on_value = kwargs.get("on_value", _("On"))
+        self.off_value = kwargs.get("off_value", _("Off"))
 
     @staticmethod
     def _convert_type(value):
@@ -31,6 +42,9 @@ class BooleanIO(SingleIO):
     @property
     def value(self) -> bool:
         return super().value
+
+
+
 
 
 if __name__ == "__main__":

@@ -6,3 +6,4 @@ from pyrediseasyio.io.boolean_io import BooleanIO
 from pyrediseasyio.io.string_io import StringIO
 from pyrediseasyio.io.float_io import FloatIO
 from pyrediseasyio.io.integer_io import IntIO
+from pyrediseasyio.io.trigger_io import TriggerIO

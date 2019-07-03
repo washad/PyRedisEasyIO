@@ -94,7 +94,7 @@ class TestHTML(unittest.TestCase):
               <button class="easyio_set" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',true)">SetMe</button>
             </td>
             <td class="easyio_btn_cell easyio_rst_btn_cell">
-              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',false)">Reset</button>
+              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',true)">Reset</button>
             </td>
           </tr>
           <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">

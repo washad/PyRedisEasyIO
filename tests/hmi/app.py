@@ -1,5 +1,5 @@
-from flask import Flask, Response
-from pyrediseasyio import IOGroup, HMTLIOGroup, HTMLIO
+from flask import Flask, Response, jsonify
+from pyrediseasyio import IOGroup, HMTLIOGroup, HTMLIO, TriggerIO
 from pyrediseasyio import StringIO, BooleanIO, FloatIO, IntIO
 from dominate.tags import head, script, body, link, div, table
 import dominate
@@ -16,8 +16,16 @@ class TestGroup(IOGroup):
     IsProgrammer = BooleanIO("Is a programmer", on_value="Yes", off_value="No", default=True)
     IsFather = BooleanIO("Is a father", on_value="Definately", off_value="Not yet", default=True)
     BathroomBreaks = IntIO("Bathroom breaks", default=3)
+    NameChange = TriggerIO("Change Name")
 
 test_group = TestGroup()
+
+def on_name_change(value):
+    test_group.FirstName = "Steven"
+    test_group.LastName = "Smith"
+
+test_group.NameChange.set_callback=on_name_change
+
 html_test_group =HMTLIOGroup(test_group)
 
 
@@ -39,6 +47,7 @@ with doc.body:
                 show_set=False, show_reset=False, show_units=True, by_lambda_each=lambda x : 'Bathroom' not in x.addr)
     with table():
         HTMLIO(test_group.BathroomBreaks).html_row(show_reset=True, show_set=True, show_value=False)
+        HTMLIO(test_group.NameChange).html_row(show_set = True, show_value=False)
 
 
 
@@ -58,7 +67,9 @@ def get_all_io():
 
 @app.route('/api/io/<key>/<value>', methods=['POST'])
 def set_io(key: str, value: str):
-    test_group.write(key, value)
+    attr = test_group.get_attribute(key=key)
+    attr.write(value)
+    return jsonify(success=True)
 
 
 
