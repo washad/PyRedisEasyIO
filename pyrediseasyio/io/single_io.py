@@ -124,7 +124,8 @@ class SingleIO:
         self.write(value)
 
     def __str__(self):
-        return f'[{type(self).__name__}] {self.name} = {self.value} {self.units}'
+        units = '' if self.units is None else self.units
+        return f'[{type(self).__name__}] {self.name} = {self.value} {units}'
 
     def __truediv__(self, other):
         if hasattr(other, 'value'):
