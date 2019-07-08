@@ -35,7 +35,7 @@ class HMTLIOGroup:
         with div(cls=f'easyio_container', id=html_id) as container:
             self._heading(headers, div, div)
             for attr in attrs:
-                HTMLIO(attr).html(**kwargs)
+                HTMLIO(attr).as_divs(**kwargs)
         return container
 
 
@@ -54,7 +54,7 @@ class HMTLIOGroup:
         with table(cls=f'easyio_container', id=html_id) as container:
             self._heading(headers, tr, th)
             for attr in attrs:
-                HTMLIO(attr).html_row(**kwargs)
+                HTMLIO(attr).as_table_row(**kwargs)
         return container
 
 

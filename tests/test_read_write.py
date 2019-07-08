@@ -10,6 +10,8 @@ class TestGroup(IOGroup):
     Int1 = IntIO("Integer 1", "Int1")
     Int2 = IntIO("Integer 2", "Int2", default=34)
     Float1 = FloatIO("Float 1", "Float1", default=1.2)
+    MinMaxInt = IntIO("Int with min/max", min=-10, max=220)
+    MinMaxFloat = FloatIO("Float with min/max", min=-30.2, max=9999.9)
 
     def __init__(self):
         super().__init__(channel="TestChannel")
@@ -159,3 +161,17 @@ class TestReadWrite(unittest.TestCase):
         assert_that(group1.Float1).is_equal_to(1.2)
 
 
+    def test_that_values_are_min_max_limited(self):
+        group = self.group
+        group.MinMaxInt = 20
+        group.MinMaxFloat = 30.0
+        assert_that(group.MinMaxInt).is_equal_to(20)
+        assert_that(group.MinMaxFloat).is_equal_to(30.0)
+
+        group.MinMaxInt = 250
+        assert_that(group.MinMaxInt).is_equal_to(220)
+        group.MinMaxInt = -60
+        assert_that(group.MinMaxInt).is_equal_to(-10)
+
+        group.MinMaxFloat = 20000
+        assert_that(group.MinMaxFloat).is_equal_to(9999.9)

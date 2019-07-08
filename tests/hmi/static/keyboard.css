@@ -1,0 +1,69 @@
+body.only-dialog {
+    pointer-events: none;
+}
+
+body.only-dialog .easyio_number_keyboard {
+    pointer-events: all;
+    display: none;
+}
+
+
+.easyio_number_keyboard{
+    display: none;
+    background-color: #E0DFD5;
+    border: 3px solid #313638;
+    border-radius: 5px;
+    width: 300px;
+    padding: 5px;
+    position: absolute;
+    left: calc(50vw - (/* width */300px / 2));
+    top: calc(50vh - (/* height */500px / 2));
+    z-index: 999
+}
+
+.easyio_number_keyboard .grid-container {
+
+    display: grid;
+    justify-content: space-evenly;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 6px;
+    padding: 5px;
+    text-align: center;
+}
+
+
+.easyio_number_keyboard .number-button{
+    width: 50px;
+    height: 50px;
+    background-color: #EFCB68;
+    font-size: large;
+}
+
+.easyio_number_keyboard  .action-button{
+    width: 75px;
+    height: 50px;
+    color: blue;
+}
+
+.easyio_number_keyboard  .title{
+    grid-column: 1 / span 4;
+}
+
+
+.easyio_number_keyboard  .entry{
+    grid-column: 1 / span 3;
+    background-color: white;
+    padding: 5px;
+    padding-right: 10px;
+    font-size: large;
+    border: 1px solid black;
+    height: 35px;
+}
+
+.easyio_number_keyboard  .units{
+    padding: 5px;
+}
+
+.easyio_number_keyboard .min, .max{
+    grid-column: span 2;
+}

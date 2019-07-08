@@ -14,6 +14,8 @@ class IntIO(NumericIO):
          - on_value:    str: The 'display_value' property will optionally return this value when the value is True
          - on_value:    str: The 'display_value' property will optionally return this value when the value is False
          - namespace:   str: Optional leading text to apply to the address to makes its key unique
+         - min:              The smallest allowable number for the entry, reads and writes will be limited by this.
+         - max:              The largest allowable number for the entry, reads and writes will be limited by this.
         """
         super().__init__(name, addr, default, **kwargs)
 

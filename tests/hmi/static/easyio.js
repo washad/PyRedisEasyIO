@@ -20,7 +20,7 @@ $(document).ready(function() {
                 let id = item.id;
                 let element = document.getElementById(id);
                 if(!(!(element))){
-                  element.innerHTML = item.display_value;
+                  element.innerText = item.display_value;
                 }
             });
             setTimeout(pollPhysicalIO,500);

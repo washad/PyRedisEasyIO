@@ -4,6 +4,7 @@ from pyrediseasyio import StringIO, BooleanIO, FloatIO, IntIO
 from dominate.tags import head, script, body, link, div, table
 import dominate
 import random
+from tests.hmi.keyboard import keyboard
 
 
 app = Flask(__name__)
@@ -17,8 +18,10 @@ class TestGroup(IOGroup):
     IsFather = BooleanIO("Is a father", on_value="Definately", off_value="Not yet", default=True)
     BathroomBreaks = IntIO("Bathroom breaks", default=3)
     NameChange = TriggerIO("Change Name")
+    IntWithMinMax = IntIO("Int with min max", units="int", min=15, max=225)
+    FloatWithMinMax = FloatIO("Float with min max", units="float", min=-40, max=200)
 
-test_group = TestGroup()
+test_group = TestGroup(namespace="Test")
 
 def on_name_change(value):
     test_group.FirstName = "Steven"
@@ -33,21 +36,22 @@ doc = dominate.document(title='Test Page')
 with doc.head:
     link(rel='stylesheet', href='https://www.w3schools.com/w3css/4/w3.css')
     link(rel='stylesheet', href="/static/easyio.css")
+    link(rel='stylesheet', href='/static/keyboard.css')
     script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
     script(type='text/javascript', src='static/easyio.js')
+    script(type='text/javascript', src='static/keyboard.js')
 with doc.body:
+    keyboard(doc)
     with div(cls="flex-container"):
         with div(cls="w3-card w3-margin w3-border w3-padding"):
             html_test_group.html_table(
                 headers=["ITEM", "VALUE", "UNITS"],
                 show_units=True)
-        with div(cls="w3-card w3-margin w3-border w3-padding"):
-            html_test_group.html(
-                headers=["ITEM", "VALUE", "UNITS"],
-                show_set=False, show_reset=False, show_units=True, by_lambda_each=lambda x : 'Bathroom' not in x.addr)
     with table():
-        HTMLIO(test_group.BathroomBreaks).html_row(show_reset=True, show_set=True, show_value=False)
-        HTMLIO(test_group.NameChange).html_row(show_set = True, show_value=False)
+        HTMLIO(test_group.BathroomBreaks).as_table_row(show_reset=True, show_set=True, show_value=False)
+        HTMLIO(test_group.NameChange).as_table_row(show_set = True, show_value=False)
+        HTMLIO(test_group.IntWithMinMax).as_table_row(show_change=True)
+        HTMLIO(test_group.FloatWithMinMax).as_table_row(show_change=True)
 
 
 

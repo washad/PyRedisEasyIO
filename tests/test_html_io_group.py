@@ -32,12 +32,12 @@ class TestHTML(unittest.TestCase):
         <div class="easyio_container" id="Pin1Bool1_io_container">
           <div class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <div class="easyio_name">Boolean 1</div>
-            <div class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</div>
+            <div class="easyio_value" data-addr="Bool1" data-namespace="Pin1" data-units="On/Off" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</div>
             <div class="easyio_units">On/Off</div>
           </div>
           <div class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <div class="easyio_name">Float 1</div>
-            <div class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</div>
+            <div class="easyio_value" data-addr="Float1" data-namespace="Pin1" data-units="furlongs" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</div>
             <div class="easyio_units">furlongs</div>
           </div>
         </div>
@@ -50,12 +50,12 @@ class TestHTML(unittest.TestCase):
         <table class="easyio_container" id="Bool1_io_container">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <td class="easyio_name">Boolean 1</td>
-            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
+            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" data-units="On/Off" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
             <td class="easyio_units">On/Off</td>
           </tr>
           <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <td class="easyio_name">Float 1</td>
-            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
+            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" data-units="furlongs" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
             <td class="easyio_units">furlongs</td>
           </tr>
         </table>
@@ -69,12 +69,12 @@ class TestHTML(unittest.TestCase):
         <table class="easyio_container" id="NewID">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <td class="easyio_name">Boolean 1</td>
-            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
+            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" data-units="On/Off" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
             <td class="easyio_units">On/Off</td>
           </tr>
           <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <td class="easyio_name">Float 1</td>
-            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
+            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" data-units="furlongs" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
             <td class="easyio_units">furlongs</td>
           </tr>
         </table>
@@ -89,7 +89,7 @@ class TestHTML(unittest.TestCase):
         <table class="easyio_container" id="NewID">
           <tr class="easyio_io" data-type="BooleanIO" id="Pin1Bool1_io">
             <td class="easyio_name">Boolean 1</td>
-            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
+            <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" data-units="On/Off" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
             <td class="easyio_btn_cell easyio_set_btn_cell">
               <button class="easyio_set" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',true)">SetMe</button>
             </td>
@@ -99,7 +99,7 @@ class TestHTML(unittest.TestCase):
           </tr>
           <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <td class="easyio_name">Float 1</td>
-            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
+            <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" data-units="furlongs" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
             <td class="easyio_btn_cell easyio_set_btn_cell">
               <button class="easyio_set" onclick="EasyIOSet('Pin1','Float1','Pin1Float1',1.23)">SetMe</button>
             </td>
