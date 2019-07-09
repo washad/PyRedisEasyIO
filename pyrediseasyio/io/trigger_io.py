@@ -1,4 +1,5 @@
 from pyrediseasyio.io.single_io import SingleIO
+from typing import Callable
 
 
 class TriggerIO(SingleIO):
@@ -6,30 +7,46 @@ class TriggerIO(SingleIO):
     set or reset operations. For example, one might want to trigger a clearing of errors, in which case the set
     callback of the trigger would be wired to turning off several other IO"""
 
-    def __init__(self, name: str, set_callback=None, read_callback=None, default = None, **kwargs):
+    def __init__(self, name: str, write_callback: Callable = None, read_callback: Callable = None,
+                 error_callback: Callable = None, default = None, **kwargs):
         """
         :param name: A human readable name to be applied to the trigger
-        :param set_callback: A method to call when setting the trigger, takes a single argument - value
-        :param read_callback: A method to call when reading the trigger, takes no arguments, and return any object
+        :param write_callback: A method to call when writing to the trigger; of form - on_write(value) => return None
+        :param read_callback: A method to call when reading from the trigger; of form - on_read() => return value
+        :param error_callback: A method to call if there was an exception with in write/read callbacks;
+                             of form - on_error(ex: Exception) => return substitute
         :param kwargs:
          - units:       str: Optional units to assign to the IO
          - on_value:    str: The 'display_value' property will optionally return this value when the value is True
          - on_value:    str: The 'display_value' property will optionally return this value when the value is False
         """
         super().__init__(name, addr=None, default=default, **kwargs)
-        self.set_callback = set_callback
+        self.write_callback = write_callback
         self.read_callback = read_callback
+        self.error_callback = error_callback
         self._iter_index = 0
 
     def read(self):
         if self.read_callback:
-            val = self.read_callback()
-            return val
-        return None
+            try:
+                return self.read_callback()
+            except Exception as ex:
+                if self.error_callback:
+                    return self.error_callback(ex)
+                else:
+                    raise
+        return self.default
 
     def write(self, value):
-        if self.set_callback:
-            self.set_callback(value)
+        if self.write_callback:
+            try:
+                return self.write_callback(value)
+            except Exception as ex:
+                if self.error_callback:
+                    return self.error_callback(ex)
+                else:
+                    raise
+        return None
 
     def __iter__(self):
         self._iter_index = 0

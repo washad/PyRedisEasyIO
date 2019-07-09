@@ -27,7 +27,7 @@ def on_name_change(value):
     test_group.FirstName = "Steven"
     test_group.LastName = "Smith"
 
-test_group.NameChange.set_callback=on_name_change
+test_group.NameChange.write_callback=on_name_change
 
 html_test_group =HMTLIOGroup(test_group)
 

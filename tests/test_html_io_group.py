@@ -15,10 +15,10 @@ class TestGroup(IOGroup):
 test_group = TestGroup(namespace='Pin1')
 
 
-def html_equals(html1, html2):
-    lines1 = [line.strip() for line in diff_utils.html2list(html1)]
+def html_equals(actual, expected):
+    lines1 = [line.strip() for line in diff_utils.html2list(actual)]
     lines1 = [line for line in lines1 if len(line) > 0]
-    lines2 = [line.strip() for line in diff_utils.html2list(html2)]
+    lines2 = [line.strip() for line in diff_utils.html2list(expected)]
     lines2 = [line for line in lines2 if len(line) > 0]
     diffs = [(line[0], line[1]) for line in zip(lines1, lines2) if line[0] != line[1]]
     return lines1 == lines2
@@ -91,20 +91,20 @@ class TestHTML(unittest.TestCase):
             <td class="easyio_name">Boolean 1</td>
             <td class="easyio_value" data-addr="Bool1" data-namespace="Pin1" data-units="On/Off" id="Pin1Bool1" onchange="OnEasyIOValueChange(event)">False</td>
             <td class="easyio_btn_cell easyio_set_btn_cell">
-              <button class="easyio_set" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',true)">SetMe</button>
+              <button class="easyio_set" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1','True')">SetMe</button>
             </td>
             <td class="easyio_btn_cell easyio_rst_btn_cell">
-              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1',false)">Reset</button>
+              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Bool1','Pin1Bool1','False')">Reset</button>
             </td>
           </tr>
           <tr class="easyio_io" data-type="FloatIO" id="Pin1Float1_io">
             <td class="easyio_name">Float 1</td>
             <td class="easyio_value" data-addr="Float1" data-namespace="Pin1" data-units="furlongs" id="Pin1Float1" onchange="OnEasyIOValueChange(event)">1.23</td>
             <td class="easyio_btn_cell easyio_set_btn_cell">
-              <button class="easyio_set" onclick="EasyIOSet('Pin1','Float1','Pin1Float1',1.23)">SetMe</button>
+              <button class="easyio_set" onclick="EasyIOSet('Pin1','Float1','Pin1Float1','1.23')">SetMe</button>
             </td>
             <td class="easyio_btn_cell easyio_rst_btn_cell">
-              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Float1','Pin1Float1',0)">Reset</button>
+              <button class="easyio_reset" onclick="EasyIOSet('Pin1','Float1','Pin1Float1','0')">Reset</button>
             </td>
           </tr>
         </table>

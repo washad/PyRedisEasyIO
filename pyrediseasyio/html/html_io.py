@@ -122,8 +122,7 @@ class HTMLIO:
         name, addr, val, units, ns = io.name, io.addr, io.value, io.units, self.namespace
         ns = "na" if not ns else ns
         value = self.default_set_value
-        value = str(value).lower()
-        return tag(txt, cls='easyio_set', onclick=f"EasyIOSet('{ns}','{addr}','{self.value_id}',{value})")
+        return tag(txt, cls='easyio_set', onclick=f"EasyIOSet('{ns}','{addr}','{self.value_id}','{value}')")
 
 
     def reset_button(self, tag: dominate.tags = button, txt: str = "Off") -> dominate.tags:
@@ -131,8 +130,7 @@ class HTMLIO:
         name, addr, val, units, ns = io.name, io.addr, io.value, io.units, self.namespace
         ns = "na" if not ns else ns
         value = self.default_reset_value
-        value = str(value).lower()
-        return tag(txt, cls='easyio_reset', onclick=f"EasyIOSet('{ns}','{addr}','{self.value_id}',{value})")
+        return tag(txt, cls='easyio_reset', onclick=f"EasyIOSet('{ns}','{addr}','{self.value_id}','{value}')")
 
 
     def with_custom_tags(self, outer: dominate.tags, inner: dominate.tags, **kwargs):

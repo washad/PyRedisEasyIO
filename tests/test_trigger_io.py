@@ -37,7 +37,7 @@ class TestGroup2(IOGroup):
 
 class TestTriggerIO(unittest.TestCase):
 
-    def on_write_reset(self, value):
+    def on_write(self, value):
         tf, i, f = value
         self.testgroup1.Bool1 = tf
         self.testgroup2.Bool1 = tf
@@ -46,15 +46,15 @@ class TestTriggerIO(unittest.TestCase):
         self.testgroup1.Float1 = f
         self.testgroup2.Float1 = f
 
-    def on_read_reset(self):
+    def on_read(self):
         tg1, tg2 = self.testgroup1, self.testgroup2
         return tg1.Int1, tg2.Float1
 
     def setUp(self) -> None:
         self.testgroup1 = TestGroup()
         self.testgroup2 = TestGroup2()
-        self.testgroup2.ApplyMany.set_callback = self.on_write_reset
-        self.testgroup2.ApplyMany.read_callback = self.on_read_reset
+        self.testgroup2.ApplyMany.write_callback = self.on_write
+        self.testgroup2.ApplyMany.read_callback = self.on_read
 
     def test_trigger_write(self):
         tg1, tg2 = self.testgroup1, self.testgroup2
@@ -73,3 +73,5 @@ class TestTriggerIO(unittest.TestCase):
         a, b = tg2.ApplyMany
         assert_that(a).is_equal_to(333)
         assert_that(b).is_equal_to(444.4)
+
+
