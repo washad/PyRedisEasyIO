@@ -7,6 +7,7 @@ from pyrediseasyio.io.single_io import SingleIO
 from pyrediseasyio.io.boolean_io import BooleanIO
 from pyrediseasyio.io.float_io import FloatIO
 from dominate.tags import div, tr, td, button
+from typing import List, Tuple
 
 _ = gettext.gettext
 
@@ -55,15 +56,15 @@ class HTMLIO:
 
             if show_set:
                 with cell_tag(cls='easyio_btn_cell easyio_set_btn_cell'):
-                    self.set_button(button, set_text)
+                    self.set_button(button, set_text, **kwargs)
 
             if show_reset:
                 with cell_tag(cls='easyio_btn_cell easyio_rst_btn_cell'):
-                    self.reset_button(button, reset_text)
+                    self.reset_button(button, reset_text, **kwargs)
 
             if show_change:
                 with cell_tag(cls='easyio_btn_cell easyio_change_btn_cell'):
-                    self.change_button(button, change_text)
+                    self.change_button(button, change_text, **kwargs)
 
 
 
@@ -81,6 +82,9 @@ class HTMLIO:
             show_units: bool: optional, set to true so thow the units column.
             set_text:   str:  The text to place on the 'set' button
             reset_text: str:  The text to place on the 'reset' button)
+            set_button_attributes: List[Tuple]: Allows additional attributes to be give to the set button
+            reset_button_attributes: List[Tuple]: Allows additional attributes to be give to the reset button
+            change_button_attributes: List[Tuple]: Allows additional attributes to be give to the change button
         :return: dominate tag object that can be rendered to html.
         """
         return self._build(div, div, **kwargs)
@@ -97,40 +101,74 @@ class HTMLIO:
             show_units: bool: optional, set to true so thow the units column.
             set_text:   str:  The text to place on the 'set' button
             reset_text: str:  The text to place on the 'reset' button)
+            set_button_attributes: List[Tuple]: Allows additional attributes to be give to the set button
+            reset_button_attributes: List[Tuple]: Allows additional attributes to be give to the reset button
+            change_button_attributes: List[Tuple]: Allows additional attributes to be give to the change button
         :return: dominate tag object that can be rendered to html.
         """
         return self._build(tr, td, **kwargs)
 
 
-    def change_button(self, tag: dominate.tags = button, txt: str = _("Change")):
+    def change_button(self, tag: dominate.tags = button, txt: str = _("Change"),
+                      change_button_attributes: List[Tuple] = None, **kwargs) -> dominate.tags:
         io = self.io
+        change_button_attributes = [] if change_button_attributes is None else change_button_attributes
         name, addr, val, units, ns = io.name, io.addr, io.value, io.units, self.namespace
         ns = "na" if not ns else ns
         _max = io.max if hasattr(io, "max") else None
         _min = io.min if hasattr(io, "min") else None
         allow_decimal = isinstance(io, FloatIO)
         allow_negative = _min is None or _min < 0
-        allow_negative = str(allow_negative).lower()
-        allow_decimal = str(allow_decimal).lower()
-        return tag(txt, cls='easyio_change',
-                   onclick=f"EasyIOChange('{io.name}', '{io.key}','{io.units}', '{_min}', "
-                   f"'{_max}', {allow_decimal}, {allow_negative})")
+
+        change_button_attributes.append(('data-allow-negative', str(allow_negative).lower()))
+        change_button_attributes.append(('data-allow-decimal', str(allow_decimal).lower()))
+        change_button_attributes.append(('data-units', str(io.units)))
+        change_button_attributes.append(('data-max', _max))
+        change_button_attributes.append(('data-min', _min))
+        change_button_attributes.append(('data-value-id', io.key))
+        change_button_attributes.append(('data-name', name))
+
+        t = tag(txt, cls='easyio_change', onclick="EasyIOChange(event)")
+
+        for a in change_button_attributes:
+            t.attributes[a[0]] = a[1]
+        return t
 
 
-    def set_button(self, tag: dominate.tags = button, txt: str = "On"):
+    def set_button(self, tag: dominate.tags = button, txt: str = "On", set_button_attributes: List[Tuple] = None,
+                   **kwargs) -> dominate.tags:
         io = self.io
         name, addr, val, units, ns = io.name, io.addr, io.value, io.units, self.namespace
-        ns = "na" if not ns else ns
+        set_button_attributes = [] if set_button_attributes is None else set_button_attributes
         value = self.default_set_value
-        return tag(txt, cls='easyio_set', onclick=f"EasyIOSet('{ns}','{addr}','{self.value_id}','{value}')")
+        ns = "na" if not ns else ns
+
+        set_button_attributes.append(('data-value-id', self.value_id))
+        set_button_attributes.append(('data-value', str(value)))
+        set_button_attributes.append(('data-namespace', ns))
+
+        t = tag(txt, cls='easyio_set', onclick=f"EasyIOSet(event)")
+        for a in set_button_attributes:
+            t.attributes[a[0]] = a[1]
+        return t
 
 
-    def reset_button(self, tag: dominate.tags = button, txt: str = "Off") -> dominate.tags:
+    def reset_button(self, tag: dominate.tags = button, txt: str = "Off", reset_button_attributes: List[Tuple] = None,
+                     **kwargs)-> dominate.tags:
         io = self.io
         name, addr, val, units, ns = io.name, io.addr, io.value, io.units, self.namespace
         ns = "na" if not ns else ns
         value = self.default_reset_value
-        return tag(txt, cls='easyio_reset', onclick=f"EasyIOSet('{ns}','{addr}','{self.value_id}','{value}')")
+        reset_button_attributes = [] if reset_button_attributes is None else reset_button_attributes
+
+        reset_button_attributes.append(('data-value-id', self.value_id))
+        reset_button_attributes.append(('data-value', str(value)))
+        reset_button_attributes.append(('data-namespace', ns))
+
+        t = tag(txt, cls='easyio_reset', onclick=f"EasyIOSet(event)")
+        for a in reset_button_attributes:
+            t.attributes[a[0]] = a[1]
+        return t
 
 
     def with_custom_tags(self, outer: dominate.tags, inner: dominate.tags, **kwargs):
@@ -147,6 +185,9 @@ class HTMLIO:
             show_units: bool: optional, set to true so thow the units column.
             set_text:   str:  The text to place on the 'set' button
             reset_text: str:  The text to place on the 'reset' button)
+            set_button_attributes: List[Tuple]: Allows additional attributes to be give to the set button
+            reset_button_attributes: List[Tuple]: Allows additional attributes to be give to the reset button
+            change_button_attributes: List[Tuple]: Allows additional attributes to be give to the change button
         :return: dominate tag object that can be rendered to html.
         """
         return self._build(tr, td, **kwargs)

@@ -153,7 +153,15 @@ class Keyboard{
 let easyio_num_keyboard = null;
 
 
-function EasyIOChange(name, key, units, min, max, allow_decimal, allow_negative){
+function EasyIOChange(event){
+    let target = event.currentTarget;
+    let name = target.getAttribute('data-name');
+    let key = target.getAttribute('data-value-id');
+    let units = target.getAttribute('data-units');
+    let min = target.getAttribute('data-min');
+    let max = target.getAttribute('data-max');
+    let allow_decimal=target.getAttribute('data-allow-decimal');
+    let allow_negative = target.getAttribute('data-allow-negative');
 
     let value_element = document.getElementById(key);
     let value = Number(value_element.innerText);

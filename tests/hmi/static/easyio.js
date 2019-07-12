@@ -1,8 +1,10 @@
 
 
-function EasyIOSet(ns, addr, id, value){
+function EasyIOSet(event){
+    let target = event.currentTarget;
+    let id = target.getAttribute('data-value-id');
+    let value = target.getAttribute('data-value');
     let xhttp = new XMLHttpRequest();
-    let element = document.getElementById(id);
     url = `/api/io/${id}/${value}`;
     xhttp.open("POST", url, true);
     xhttp.send();
