@@ -33,7 +33,7 @@ class NumericIO(SingleIO):
 
     def write(self, value):
         if value is None:
-            return super().write(self, value)
+            return super().write(value)
         value = self._convert_type(value)
         if self.max is not None and value > self._convert_type(self.max):
             value = self.max
