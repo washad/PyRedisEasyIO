@@ -1,6 +1,6 @@
-from pyrediseasyio import TriggerIO
 from pyrediseasyio.reader_writer import ReaderWriter
 from pyrediseasyio.io.single_io import SingleIO
+from pyrediseasyio.io.trigger_io import TriggerIO
 from typing import List, Callable
 import json
 
