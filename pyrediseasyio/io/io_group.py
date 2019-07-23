@@ -1,3 +1,4 @@
+from pyrediseasyio import TriggerIO
 from pyrediseasyio.reader_writer import ReaderWriter
 from pyrediseasyio.io.single_io import SingleIO
 from typing import List, Callable
@@ -109,7 +110,7 @@ class IOGroup(ReaderWriter):
     def set_all_to_defaults(self):
         """ Set the value for all members to their defaults."""
         attrs = self.get_attributes()
-        for attr in attrs:
+        for attr in [a for a in attrs if not isinstance(a, TriggerIO)]:
             attr.write(attr.default)
 
 
