@@ -59,14 +59,14 @@ class SingleIO:
             other = other.value
         val = self.value
         val += other
-        self.write(val)
+        return val
 
     def __idiv__(self, other):
         if hasattr(other, 'value'):
             other = other.value
         val = self.value
         val /= other
-        self.write(val)
+        return val
 
     def __ifloordiv__(self, other):
         if hasattr(other, 'value'):
@@ -80,7 +80,7 @@ class SingleIO:
             other = other.value
         val = self.value
         val *= other
-        self.write(val)
+        return val
 
     def __invert__(self):
         return ~self.value
@@ -97,7 +97,7 @@ class SingleIO:
             other = other.value
         val = self.value
         val -= other
-        self.write(val)
+        return val
 
     def __ne__(self, other):
         if hasattr(other, 'value'):
@@ -144,7 +144,10 @@ class SingleIO:
 
     @property
     def value(self):
-        return self.read()
+        val = self.read()
+        if val is None:
+            val = self.default
+        return val
 
     @staticmethod
     def _convert_type(value):
