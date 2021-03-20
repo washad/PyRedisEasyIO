@@ -4,7 +4,7 @@ dominate==2.3.5
 Flask==1.0.3
 htmldiffer==0.25.2
 itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 redis==3.2.1
 str2bool==1.1
